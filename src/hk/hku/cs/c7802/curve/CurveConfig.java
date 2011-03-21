@@ -1,8 +1,7 @@
 package hk.hku.cs.c7802.curve;
 
-import hk.hku.cs.c7802.base.time.TimeDiff;
 import hk.hku.cs.c7802.curve.util.Interpolator;
-import hk.hku.cs.c7802.rate.InterestRate;
+import hk.hku.cs.c7802.rate.InterestType;
 
 public class CurveConfig {
 
@@ -13,15 +12,10 @@ public class CurveConfig {
 		return interpo;
 	}
 	
-	public CurveRateFactory getRateFac() {
-		return rateFac;
+	public InterestType getCurveRateType() {
+		return curveRateType;
 	}
 	
 	private Interpolator interpo;
-	private CurveRateFactory rateFac;
-	
-	public interface CurveRateFactory {
-		
-		public InterestRate fromDisFactor(double df, TimeDiff diff);
-	}
+	private InterestType curveRateType;
 }

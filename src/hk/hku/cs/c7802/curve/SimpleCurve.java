@@ -18,6 +18,8 @@ public class SimpleCurve implements YieldCurve{
 	}
 	
 	public void addDataPoint(TimeDiff diff, double disFactor) {
+		dfpoints.put(key(diff), disFactor);
+		ratepoints.put(key(diff), config.getCurveRateType().fromDisFactor(disFactor, diff));
 	}
 
 	@Override
@@ -27,9 +29,16 @@ public class SimpleCurve implements YieldCurve{
 
 	@Override
 	public double disFactorAfter(TimeDiff diff) {
-		// TODO the following is not correct
-		config.getInterpolator().interpolate(key(diff), datapoints);
-		return 0;
+		// find saved discount factor
+		Double ret = dfpoints.get(key(diff));
+		// if nothing found, do interpolation
+		if (ret == null) {
+			double rate = config.getInterpolator().interpolate(key(diff), ratepoints);
+			ret = config.getCurveRateType().disFactorAfter(rate, diff);
+			// save interpolation result
+			dfpoints.put(key(diff), ret);
+		}
+		return ret;
 	}
 	
 	private double key(TimeDiff diff) {
@@ -38,5 +47,6 @@ public class SimpleCurve implements YieldCurve{
 	
 	private TimePoint timestamp;
 	private CurveConfig config;
-	private SortedMap<Double, Double> datapoints;
+	private SortedMap<Double, Double> dfpoints;
+	private SortedMap<Double, Double> ratepoints;
 }
