@@ -1,6 +1,6 @@
 package hk.hku.cs.c7802.inst;
 
-import hk.hku.cs.c7802.base.CashFlow;
+import hk.hku.cs.c7802.base.cash.CashFlow;
 
 public interface Instrument {
 

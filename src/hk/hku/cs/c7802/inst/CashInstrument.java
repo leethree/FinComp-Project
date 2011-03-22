@@ -1,7 +1,7 @@
 package hk.hku.cs.c7802.inst;
 
-import hk.hku.cs.c7802.base.CashFlow;
-import hk.hku.cs.c7802.base.CashStream;
+import hk.hku.cs.c7802.base.cash.CashFlow;
+import hk.hku.cs.c7802.base.cash.CashStream;
 import hk.hku.cs.c7802.base.time.TimeSpan;
 import hk.hku.cs.c7802.rate.InterestType;
 

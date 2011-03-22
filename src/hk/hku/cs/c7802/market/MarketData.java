@@ -1,6 +1,6 @@
 package hk.hku.cs.c7802.market;
 
-import hk.hku.cs.c7802.base.CashFlow;
+import hk.hku.cs.c7802.base.cash.CashFlow;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.inst.Instrument;
 

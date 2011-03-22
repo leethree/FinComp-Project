@@ -1,4 +1,4 @@
-package hk.hku.cs.c7802.base;
+package hk.hku.cs.c7802.base.cash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import hk.hku.cs.c7802.base.time.TimePoint;
 public class CashStream {
 	
 	public CashStream() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public interface CashStreamEvaluater {
@@ -16,9 +15,9 @@ public class CashStream {
 	}
 	
 	public CashFlow valueWith(CashStreamEvaluater ev) {
-		CashFlow ret = CashFlow.EMPTY;
+		CashFlow ret = CashFlow.createEmpty();
 		for (CashStreamElement ele : list){
-			ret.combine(ev.valueOf(ele.cash, ele.time));
+			ret.plus(ev.valueOf(ele.cash, ele.time));
 		}
 		return ret;
 	}
@@ -27,5 +26,6 @@ public class CashStream {
 		public CashFlow cash;
 		public TimePoint time;
 	}
+	
 	private List<CashStreamElement> list = new ArrayList<CashStreamElement>();
 }
