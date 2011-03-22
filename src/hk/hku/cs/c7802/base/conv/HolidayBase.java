@@ -1,10 +1,12 @@
 package hk.hku.cs.c7802.base.conv;
 
+import java.util.Calendar;
+
 import hk.hku.cs.c7802.base.time.TimePoint;
 
 public interface HolidayBase {
 
-	public static final HolidayBase DEFAULT = new SimpleHolidayBase();
+	public static final HolidayBase WEEKEND_ONLY = new SimpleHolidayBase();
 
 	public boolean isHoliday(TimePoint time);
 
@@ -12,8 +14,8 @@ public interface HolidayBase {
 
 		@Override
 		public boolean isHoliday(TimePoint time) {
-			// TODO Auto-generated method stub
-			return false;
+			int day = time.getTime().get(Calendar.DAY_OF_WEEK);
+			return day == Calendar.SATURDAY || day == Calendar.SUNDAY;
 		}
 
 	}

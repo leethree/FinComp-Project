@@ -6,13 +6,13 @@ public class TimeSpan {
 		this(0, 0, 0);
 	}
 	
-	protected TimeSpan(int year, int month, int day) {
+	public TimeSpan(int year, int month, long day) {
 		this.year = year;
 		this.month = month;
 		this.day = day;
 	}
 	
-	public int getDay() {
+	public long getDay() {
 		return day;
 	}
 	
@@ -26,7 +26,7 @@ public class TimeSpan {
 	
 	public static TimeSpan parse(String str) {
 		TimeSpan ret = new TimeSpan();
-		// TODO parse
+		// TODO parse should be handled by IO
 		return ret;
 	}
 	
@@ -35,5 +35,5 @@ public class TimeSpan {
 	
 	private int year;
 	private int month;
-	private int day;
+	private long day;
 }

@@ -24,7 +24,7 @@ public class SimpleCurve implements YieldCurve{
 
 	@Override
 	public double disFactorAt(TimePoint time) {
-		return disFactorAfter(time.diff(timestamp));
+		return disFactorAfter(time.minus(timestamp));
 	}
 
 	@Override

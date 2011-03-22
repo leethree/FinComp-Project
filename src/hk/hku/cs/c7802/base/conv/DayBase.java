@@ -17,8 +17,7 @@ public interface DayBase {
 
 		@Override
 		public double factor(TimeDiff df) {
-			// TODO Auto-generated method stub
-			return 0;
+			return df.getDay() / 365;
 		}
 
 	}

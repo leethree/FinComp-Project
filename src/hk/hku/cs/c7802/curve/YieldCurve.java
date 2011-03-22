@@ -6,7 +6,7 @@ import hk.hku.cs.c7802.base.time.TimePoint;
 public interface YieldCurve {
 
 	/**
-	 * @return the reference time of this curve 
+	 * @return Reference time of this curve 
 	 */
 	public TimePoint getTimestamp();
 	
