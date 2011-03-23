@@ -1,7 +1,12 @@
 package hk.hku.cs.c7802.base.cash;
 
 import java.util.Currency;
+import java.util.Locale;
 
+/**
+ * A cash flow is just a certain amount of money
+ *
+ */
 public abstract class CashFlow {
 	
 	protected CashFlow() {
@@ -11,8 +16,18 @@ public abstract class CashFlow {
 	
 	public abstract Currency getCurrency();
 	
+	/**
+	 * 
+	 * @param c
+	 * @return Combined cash flow
+	 */
 	public abstract CashFlow plus(CashFlow c);
 	
+	/**
+	 * Scale the cash flow according to a factor
+	 * @param s
+	 * @return
+	 */
 	public abstract CashFlow multiply(double s);
 	
 	public static void setDefaultCurrency(Currency cur) {
@@ -37,5 +52,5 @@ public abstract class CashFlow {
 	@Override
 	public abstract boolean equals(Object arg0);
 	
-	protected static Currency defaultCur = Currency.getInstance("HKD");
+	protected static Currency defaultCur = Currency.getInstance(Locale.getDefault());
 }

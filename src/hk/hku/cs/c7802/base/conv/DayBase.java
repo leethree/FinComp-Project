@@ -17,7 +17,7 @@ public interface DayBase {
 
 		@Override
 		public double factor(TimeDiff df) {
-			return df.getDay() / 365;
+			return df.getDay() / 365.0;
 		}
 
 	}

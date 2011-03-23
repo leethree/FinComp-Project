@@ -11,14 +11,12 @@ public class SimpleRate extends InterestType {
 
 	@Override
 	protected double payOutAfter(double rate, TimeDiff diff) {
-		// TODO Auto-generated method stub
-		return 0;
+		return rate * dcf(diff);
 	}
 
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
-		// TODO Auto-generated method stub
-		return 0;
+		return (1 / df - 1) / dcf(diff);
 	}
 	
 }

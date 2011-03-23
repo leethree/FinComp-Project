@@ -35,5 +35,14 @@ public abstract class InterestType {
 	 */
 	public abstract double fromDisFactor(double df, TimeDiff diff);
 	
+	/**
+	 * 
+	 * @param diff
+	 * @return The day count factor for the period of time
+	 */
+	protected double dcf(TimeDiff diff) {
+		return base.factor(diff);
+	}
+	
 	protected DayBase base;
 }
