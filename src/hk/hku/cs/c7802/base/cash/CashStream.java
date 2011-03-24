@@ -1,31 +1,46 @@
 package hk.hku.cs.c7802.base.cash;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import hk.hku.cs.c7802.base.time.TimePoint;
 
 public class CashStream {
 	
 	public CashStream() {
+		map = new TreeMap<TimePoint, CashFlow>();
 	}
 
-	public interface CashStreamEvaluater {
-		public CashFlow valueOf(CashFlow cf, TimePoint tp);
-	}
-	
-	public CashFlow valueWith(CashStreamEvaluater ev) {
-		CashFlow ret = CashFlow.createEmpty();
-		for (CashStreamElement ele : list){
-			ret.plus(ev.valueOf(ele.cash, ele.time));
+	public void add(CashFlow cf, TimePoint tp) {
+		CashFlow old = addNonEmpty(cf, tp);
+		// If key already exists
+		if (old != null) {
+			addNonEmpty(old.plus(cf), tp);
 		}
-		return ret;
 	}
 	
-	private class CashStreamElement {
-		public CashFlow cash;
-		public TimePoint time;
+	public void accept(CashStreamVisitor visitor) {
+		visitor.before();
+		for (TimePoint tp : map.keySet()){
+			visitor.visit(map.get(tp), tp);
+		}
+		visitor.after();
+	}
+
+	public interface CashStreamVisitor {
+		
+		public void before();
+		
+		public void visit(CashFlow cf, TimePoint tp);
+		
+		public void after();
 	}
 	
-	private List<CashStreamElement> list = new ArrayList<CashStreamElement>();
+	private CashFlow addNonEmpty(CashFlow cf, TimePoint tp) {
+		if (!cf.isEmpty())
+			return map.put(tp, cf);
+		return null;
+	}
+	
+	private SortedMap<TimePoint, CashFlow> map;
 }

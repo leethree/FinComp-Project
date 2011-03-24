@@ -8,7 +8,7 @@ public class CurveConfig {
 	public CurveConfig() {
 	}
 	
-	public Interpolator getInterpolator() {
+	public Interpolator<Long> getInterpolator() {
 		return interpo;
 	}
 	
@@ -16,6 +16,6 @@ public class CurveConfig {
 		return curveRateType;
 	}
 	
-	private Interpolator interpo;
+	private Interpolator<Long> interpo;
 	private InterestType curveRateType;
 }

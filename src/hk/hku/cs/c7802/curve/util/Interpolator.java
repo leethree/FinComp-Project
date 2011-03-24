@@ -2,8 +2,8 @@ package hk.hku.cs.c7802.curve.util;
 
 import java.util.SortedMap;
 
-public interface Interpolator {
+public interface Interpolator<K> {
 	
-	double interpolate(double point, SortedMap<Double, Double> datapoints);
+	double interpolate(K point, SortedMap<K, Double> datapoints);
 	
 }

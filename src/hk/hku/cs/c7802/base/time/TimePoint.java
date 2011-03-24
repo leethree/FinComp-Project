@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-public class TimePoint {
+public class TimePoint implements Comparable<TimePoint>{
 
 	private TimePoint(TimeZone tz, Date time) {
 		this.time = new GregorianCalendar(tz);
@@ -78,6 +78,11 @@ public class TimePoint {
 		return true;
 	}
 
+	@Override
+	public int compareTo(TimePoint other) {
+		return this.time.compareTo(other.time);
+	}
+	
 	/**
 	 * 
 	 * @param str

@@ -24,9 +24,12 @@ public class TimeSpan {
 		return year;
 	}
 	
-	public static TimeSpan parse(String str) {
-		TimeSpan ret = new TimeSpan();
-		// TODO parse should be handled by IO
+	@Override
+	public String toString() {
+		String ret = "";
+		ret += year != 0 ? year + "yr" : "";
+		ret += month != 0 ? month + "m" : "";
+		ret += day != 0 ? day + "d" : "";
 		return ret;
 	}
 	

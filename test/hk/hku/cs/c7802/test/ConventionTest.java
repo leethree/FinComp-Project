@@ -48,7 +48,7 @@ public class ConventionTest {
 	
 	@Test
 	public void testActual365() {
-		assertEquals(40/365, DayBase.ACT365.factor(time2.minus(time)), 0.000001);
+		assertEquals(40.0/365.0, DayBase.ACT365.factor(time2.minus(time)), 0.000001);
 	}
 	
 	private TimePoint time;

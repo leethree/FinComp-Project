@@ -10,6 +10,7 @@ public class SimpleCurve implements YieldCurve{
 	public SimpleCurve(TimePoint timestamp, CurveConfig config) {
 		this.timestamp = timestamp;
 		this.config = config;
+		// TODO init maps
 	}
 	
 	@Override
@@ -18,6 +19,7 @@ public class SimpleCurve implements YieldCurve{
 	}
 	
 	public void addDataPoint(TimeDiff diff, double disFactor) {
+		// TODO how about overlaying?
 		dfpoints.put(key(diff), disFactor);
 		ratepoints.put(key(diff), config.getCurveRateType().fromDisFactor(disFactor, diff));
 	}
@@ -41,12 +43,12 @@ public class SimpleCurve implements YieldCurve{
 		return ret;
 	}
 	
-	private double key(TimeDiff diff) {
+	private long key(TimeDiff diff) {
 		return diff.getDay();
 	}
 	
 	private TimePoint timestamp;
 	private CurveConfig config;
-	private SortedMap<Double, Double> dfpoints;
-	private SortedMap<Double, Double> ratepoints;
+	private SortedMap<Long, Double> dfpoints;
+	private SortedMap<Long, Double> ratepoints;
 }

@@ -12,6 +12,10 @@ public abstract class CashFlow {
 	protected CashFlow() {
 	}
 
+	/**
+	 * Positive -> income
+	 * @return
+	 */
 	public abstract double getAmount();
 	
 	public abstract Currency getCurrency();
@@ -29,6 +33,10 @@ public abstract class CashFlow {
 	 * @return
 	 */
 	public abstract CashFlow multiply(double s);
+	
+	public final boolean isEmpty() {
+		return this == createEmpty();
+	}
 	
 	public static void setDefaultCurrency(Currency cur) {
 		defaultCur = cur;

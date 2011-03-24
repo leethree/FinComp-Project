@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Aaron Gadberry
  */
 
-public class CalendarUtils {
+class CalendarUtils {
 
 	/**
 	 * Unit is utilized to distinguish the valid types of units that can be

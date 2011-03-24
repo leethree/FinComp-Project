@@ -23,7 +23,7 @@ public abstract class InterestType {
 	 * @param diff Time duration for interest calculation
 	 * @return The discount factor when the interest is payed-out
 	 */
-	public double disFactorAfter(double rate, TimeDiff diff) {
+	public final double disFactorAfter(double rate, TimeDiff diff) {
 		return 1 / (1 + payOutAfter(rate, diff));
 	}
 	
@@ -40,7 +40,7 @@ public abstract class InterestType {
 	 * @param diff
 	 * @return The day count factor for the period of time
 	 */
-	protected double dcf(TimeDiff diff) {
+	protected final double dcf(TimeDiff diff) {
 		return base.factor(diff);
 	}
 	

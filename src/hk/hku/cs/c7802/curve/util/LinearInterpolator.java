@@ -2,10 +2,10 @@ package hk.hku.cs.c7802.curve.util;
 
 import java.util.SortedMap;
 
-public class LinearInterpolator implements Interpolator {
+public class LinearInterpolator implements Interpolator<Number> {
 
 	@Override
-	public double interpolate(double point, SortedMap<Double, Double> datapoints) {
+	public double interpolate(Number point, SortedMap<Number, Double> datapoints) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
