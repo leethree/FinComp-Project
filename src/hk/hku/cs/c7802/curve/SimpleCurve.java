@@ -1,16 +1,20 @@
 package hk.hku.cs.c7802.curve;
 
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 import hk.hku.cs.c7802.base.time.TimeDiff;
 import hk.hku.cs.c7802.base.time.TimePoint;
+import hk.hku.cs.c7802.curve.util.OutOfRangeException;
 
 public class SimpleCurve implements YieldCurve{
 
 	public SimpleCurve(TimePoint timestamp, CurveConfig config) {
 		this.timestamp = timestamp;
 		this.config = config;
-		// TODO init maps
+		this.dfpoints = new TreeMap<Long, Double>();
+		this.ratepoints = new TreeMap<Long, Double>();
+		dfpoints.put(0L, 1.0);
 	}
 	
 	@Override
@@ -19,7 +23,7 @@ public class SimpleCurve implements YieldCurve{
 	}
 	
 	public void addDataPoint(TimeDiff diff, double disFactor) {
-		// TODO how about overlaying?
+		// TODO how about overwritting?
 		dfpoints.put(key(diff), disFactor);
 		ratepoints.put(key(diff), config.getCurveRateType().fromDisFactor(disFactor, diff));
 	}
@@ -35,10 +39,16 @@ public class SimpleCurve implements YieldCurve{
 		Double ret = dfpoints.get(key(diff));
 		// if nothing found, do interpolation
 		if (ret == null) {
-			double rate = config.getInterpolator().interpolate(key(diff), ratepoints);
-			ret = config.getCurveRateType().disFactorAfter(rate, diff);
-			// save interpolation result
-			dfpoints.put(key(diff), ret);
+			try {
+				double rate = config.getInterpolator().interpolate(key(diff), ratepoints);
+				ret = config.getCurveRateType().disFactorAfter(rate, diff);
+				// save interpolation result
+				dfpoints.put(key(diff), ret);
+			} catch (OutOfRangeException e) {
+				// TODO
+				e.printStackTrace();
+				return 0;
+			}
 		}
 		return ret;
 	}

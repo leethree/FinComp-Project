@@ -6,10 +6,9 @@ import hk.hku.cs.c7802.inst.Instrument;
 
 public class MarketData {
 
-	public MarketData(Instrument inst, CashFlow price, TimePoint time) {
+	public MarketData(Instrument inst, CashFlow price) {
 		this.inst = inst;
 		this.price = price;
-		this.time = time;
 	}
 	
 	public Instrument getInst() {
@@ -20,11 +19,10 @@ public class MarketData {
 		return price;
 	}
 	
-	public TimePoint getTime() {
-		return time;
+	public TimePoint getTimestamp() {
+		return inst.getTimestamp();
 	}
 	
 	private Instrument inst;
 	private CashFlow price;
-	private TimePoint time;
 }

@@ -9,6 +9,8 @@ import org.junit.runners.Suite;
 	ConventionTest.class,
 	CashTest.class,
 	InterestRateTest.class,
+	InterpolatorTest.class,
+	CurveTest.class,
 	CashInstrumentTest.class
 })
 public class AllTests {

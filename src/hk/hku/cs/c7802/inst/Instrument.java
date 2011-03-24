@@ -23,6 +23,14 @@ public abstract class Instrument {
 		public CashFlow getValue();
 	}
 	
+	public TimePoint getTimestamp() {
+		return timestamp;
+	}
+	
+	public TimePoint getValidthru() {
+		return validthru;
+	}
+	
 	@Override
 	public String toString() {
 		return name + "@" + timestamp.toString();

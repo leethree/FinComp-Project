@@ -12,8 +12,16 @@ public class CurveConfig {
 		return interpo;
 	}
 	
+	public void setInterpolator(Interpolator<Long> interpo) {
+		this.interpo = interpo;
+	}
+	
 	public InterestType getCurveRateType() {
 		return curveRateType;
+	}
+	
+	public void setCurveRateType(InterestType curveRateType) {
+		this.curveRateType = curveRateType;
 	}
 	
 	private Interpolator<Long> interpo;
