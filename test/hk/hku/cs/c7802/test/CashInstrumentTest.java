@@ -1,20 +1,15 @@
 package hk.hku.cs.c7802.test;
 
 import static org.junit.Assert.*;
-import hk.hku.cs.c7802.base.cash.CashFlow;
-import hk.hku.cs.c7802.base.cash.CashStream.CashStreamVisitor;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.base.time.TimeSpan;
 import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.SimpleEvaluator;
 import hk.hku.cs.c7802.inst.CashInstrument;
-import hk.hku.cs.c7802.inst.Instrument;
-import hk.hku.cs.c7802.rate.CompoundRate;
 import hk.hku.cs.c7802.rate.SimpleRate;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CashInstrumentTest {
