@@ -12,11 +12,11 @@ public class CallPutOption extends VanillaOption {
 
 	@Override
 	public CashFlow payout(double stockPrice) {
-		double payoff = stockPrice - strike;
-		if (isCall && payoff > 0)
-			return CashFlow.create(stock.getCurrency(), payoff);
-		else if (!isCall && payoff < 0)
-			return CashFlow.create(stock.getCurrency(), - payoff);
+		double payout = stockPrice - strike;
+		if (isCall && payout > 0)
+			return CashFlow.create(stock.getCurrency(), payout);
+		else if (!isCall && payout < 0)
+			return CashFlow.create(stock.getCurrency(), - payout);
 		else
 			return CashFlow.createEmpty();
 	}

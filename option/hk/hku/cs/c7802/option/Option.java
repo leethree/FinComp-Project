@@ -17,6 +17,10 @@ public abstract class Option extends Instrument{
 
 	public abstract CashFlow payout(StockPricer pricer);
 	
+	public Stock getStock() {
+		return stock;
+	}
+	
 	protected Stock stock;
 	protected TimePoint expiry;
 	
@@ -25,12 +29,12 @@ public abstract class Option extends Instrument{
 		protected OptionBuilder(){
 		}
 		
-		public OptionBuilder stock(Stock stock) {
+		public OptionBuilder dependingOn(Stock stock) {
 			this.stock = stock;
 			return this;
 		}
 		
-		public OptionBuilder expiresAt(TimePoint expiry) {
+		public OptionBuilder expiringAt(TimePoint expiry) {
 			this.expiry = expiry;
 			return this;
 		}
@@ -43,5 +47,8 @@ public abstract class Option extends Instrument{
 		
 		public double priceAt(TimePoint time);
 		
+		public double maxBefore(TimePoint time);
+		
+		public double minBefore(TimePoint time);
 	}
 }

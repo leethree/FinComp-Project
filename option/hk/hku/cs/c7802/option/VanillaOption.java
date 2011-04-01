@@ -2,6 +2,11 @@ package hk.hku.cs.c7802.option;
 
 import hk.hku.cs.c7802.base.cash.CashFlow;
 
+/**
+ * Vanilla Options are options whose pay-out only depends on the price of the underlying stock at expiry.
+ * It could be either European or American.
+ *
+ */
 public abstract class VanillaOption extends Option {
 
 	protected VanillaOption(VanillaOptionBuilder builder) {
