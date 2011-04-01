@@ -5,14 +5,11 @@ import hk.hku.cs.c7802.base.cash.CashStream;
 import hk.hku.cs.c7802.base.conv.DateRoller;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.base.time.TimeSpan;
-import hk.hku.cs.c7802.rate.InterestType;
 
-public class CashInstrument extends Instrument {
+public class CashInstrument extends InterestRateInstrument {
 
 	private CashInstrument(CashInstrumentBuilder builder) {
 		super(builder);
-		this.rate = builder.rate;
-		this.rateType = builder.rateType;
 		this.maturity = builder.maturity;
 		if ((rateType == null) || (maturity == null))
 			throw new IllegalArgumentException("Missing parameter(s) for Cash Instrument.");
@@ -27,22 +24,12 @@ public class CashInstrument extends Instrument {
 
 	@Override
 	public String toString() {
-		return super.toString() + " [" + rate + ", " + maturity + "]";
+		return super.toString() + " [" + maturity + "]";
 	}
 	
-	public static class CashInstrumentBuilder extends InstrumentBuilder{
+	public static class CashInstrumentBuilder extends InterestRateInstrumentBuilder{
 		
 		protected CashInstrumentBuilder(){
-		}
-		
-		public CashInstrumentBuilder rate(double rate) {
-			this.rate = rate;
-			return this;
-		}
-		
-		public CashInstrumentBuilder usingRateType(InterestType rateType) {
-			this.rateType = rateType;
-			return this;
 		}
 		
 		public CashInstrumentBuilder maturingAfter(TimeSpan maturity) {
@@ -55,8 +42,6 @@ public class CashInstrument extends Instrument {
 			return new CashInstrument(this);
 		}
 		
-		private double rate = 0;
-		private InterestType rateType;
 		private TimeSpan maturity;
 	}
 	
@@ -74,8 +59,6 @@ public class CashInstrument extends Instrument {
 		stream.add(CashFlow.create(1 / rateType.disFactorAfter(rate, payday.minus(ref))), payday);
 	}
 	
-	private double rate;
-	private InterestType rateType;
 	private TimeSpan maturity;
 	private CashStream stream;
 }

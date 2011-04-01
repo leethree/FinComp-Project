@@ -1,7 +1,5 @@
 package hk.hku.cs.c7802.inst;
 
-import hk.hku.cs.c7802.base.cash.CashFlow;
-import hk.hku.cs.c7802.base.cash.CashStream.CashStreamVisitor;
 import hk.hku.cs.c7802.base.time.TimePoint;
 
 public abstract class Instrument {
@@ -12,15 +10,6 @@ public abstract class Instrument {
 		this.validthru = builder.validthru;
 		if ((name == null) || (timestamp == null))
 			throw new IllegalArgumentException("Missing metadata for Instrument.");
-	}
-	
-	public abstract CashFlow valueWith(InstrumentEvaluator ev);
-	
-	public interface InstrumentEvaluator {
-		
-		public CashStreamVisitor getCashStreamVisitor();
-		
-		public CashFlow getValue();
 	}
 	
 	public TimePoint getTimestamp() {
