@@ -15,7 +15,7 @@ public abstract class InterestType {
 	 * @param diff Time duration for interest calculation
 	 * @return Pay-out interest amount for principal = 1
 	 */
-	protected abstract double payOutAfter(double rate, TimeDiff diff);
+	public abstract double payOutAfter(double rate, TimeDiff diff);
 	
 	/***
 	 * 

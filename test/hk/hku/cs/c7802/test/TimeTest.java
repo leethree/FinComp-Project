@@ -23,6 +23,12 @@ public class TimeTest {
 	}
 
 	@Test
+	public void testSpan() {
+		assertEquals(new TimeSpan(2, 3, 13), new TimeSpan(1, 15, 13));
+		assertEquals(new TimeSpan(3, 0, 14), new TimeSpan(1, 11, 13).plus(new TimeSpan(1, 1, 1)));
+	}
+	
+	@Test
 	public void testDiff() {
 		try {
 			TimePoint time2 = TimePoint.parse("2011-02-20 23:18:42 GMT+8");

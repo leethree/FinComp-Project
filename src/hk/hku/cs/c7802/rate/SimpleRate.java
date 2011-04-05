@@ -10,7 +10,7 @@ public class SimpleRate extends InterestType {
 	}
 
 	@Override
-	protected double payOutAfter(double rate, TimeDiff diff) {
+	public double payOutAfter(double rate, TimeDiff diff) {
 		return rate * dcf(diff);
 	}
 

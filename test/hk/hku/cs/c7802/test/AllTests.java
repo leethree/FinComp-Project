@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
 	InterestRateTest.class,
 	InterpolatorTest.class,
 	CurveTest.class,
-	CashInstrumentTest.class
+	CashInstrumentTest.class,
+	FRATest.class,
+	SwapTest.class
 })
 public class AllTests {
 

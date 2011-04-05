@@ -13,7 +13,7 @@ public class CompoundRate extends InterestType {
 	}
 
 	@Override
-	protected double payOutAfter(double rate, TimeDiff diff) {
+	public double payOutAfter(double rate, TimeDiff diff) {
 		return Math.pow(1 + rate / frequency, frequency * dcf(diff)) - 1;
 	}
 
