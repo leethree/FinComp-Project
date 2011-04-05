@@ -32,7 +32,7 @@ class FixedCashFlow extends CashFlow{
 	
 	@Override
 	public CashFlow multiply(double s) {
-		return create(amount * s);
+		return create(cur, amount * s);
 	}
 	
 	@Override

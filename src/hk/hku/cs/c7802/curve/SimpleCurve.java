@@ -29,26 +29,20 @@ public class SimpleCurve implements YieldCurve{
 	}
 
 	@Override
-	public double disFactorAt(TimePoint time) {
+	public double disFactorAt(TimePoint time) throws OutOfRangeException {
 		return disFactorAfter(time.minus(timestamp));
 	}
 
 	@Override
-	public double disFactorAfter(TimeDiff diff) {
+	public double disFactorAfter(TimeDiff diff) throws OutOfRangeException {
 		// find saved discount factor
 		Double ret = dfpoints.get(key(diff));
 		// if nothing found, do interpolation
 		if (ret == null) {
-			try {
-				double rate = config.getInterpolator().interpolate(key(diff), ratepoints);
-				ret = config.getCurveRateType().disFactorAfter(rate, diff);
-				// save interpolation result
-				dfpoints.put(key(diff), ret);
-			} catch (OutOfRangeException e) {
-				// TODO
-				e.printStackTrace();
-				return 0;
-			}
+			double rate = config.getInterpolator().interpolate(key(diff), ratepoints);
+			ret = config.getCurveRateType().disFactorAfter(rate, diff);
+			// save interpolation result
+			dfpoints.put(key(diff), ret);
 		}
 		return ret;
 	}

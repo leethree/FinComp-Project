@@ -8,6 +8,7 @@ import hk.hku.cs.c7802.curve.CurveConfig;
 import hk.hku.cs.c7802.curve.SimpleCurve;
 import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.LinearInterpolator;
+import hk.hku.cs.c7802.curve.util.OutOfRangeException;
 import hk.hku.cs.c7802.rate.CompoundRate;
 
 import org.junit.Before;
@@ -28,7 +29,11 @@ public class CurveTest {
 
 	@Test
 	public void testDisFactorAt() {
-		assertEquals(0.975036, curve.disFactorAfter(new TimeDiff(20)), 0.000001);
+		try {
+			assertEquals(0.975036, curve.disFactorAfter(new TimeDiff(20)), 0.000001);
+		} catch (OutOfRangeException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	public YieldCurve getCurve() {

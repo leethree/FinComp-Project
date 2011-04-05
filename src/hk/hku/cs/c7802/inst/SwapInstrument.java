@@ -41,7 +41,7 @@ public class SwapInstrument extends InterestRateInstrument {
 		TimeSpan couponInterval = period;
 		TimePoint lastCouponDay = ref;
 		TimePoint nextCouponDay = DateRoller.MOD_NEXT_BUZ_DAY.roll(ref.plus(couponInterval));
-		while (payday.minus(nextCouponDay).getDay() >= 0) {
+		while (payday.compareTo(nextCouponDay) >= 0) {
 			// we get a coupon every several months, depending on coupon period
 			stream.add(CashFlow.create(rateType.payOutAfter(rate, nextCouponDay.minus(lastCouponDay))), nextCouponDay);
 			couponInterval = couponInterval.plus(period);
