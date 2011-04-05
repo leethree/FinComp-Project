@@ -35,6 +35,9 @@ public abstract class InterestType {
 	 */
 	public abstract double fromDisFactor(double df, TimeDiff diff);
 	
+	@Override
+	public abstract String toString();
+	
 	/**
 	 * 
 	 * @param diff

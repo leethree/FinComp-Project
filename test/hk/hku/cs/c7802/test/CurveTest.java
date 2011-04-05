@@ -20,7 +20,7 @@ public class CurveTest {
 		CurveConfig config = new CurveConfig();
 		config.setCurveRateType(new CompoundRate(DayBase.ACT365, 4));
 		config.setInterpolator(new LinearInterpolator());
-		SimpleCurve s = new SimpleCurve(TimePoint.now(), config);
+		SimpleCurve s = new SimpleCurve(TimePoint.parse("2011-03-31 14:59:10 GMT+8"), config);
 		s.addDataPoint(new TimeDiff(50), 0.92);
 		s.addDataPoint(new TimeDiff(1), 0.999);
 		this.curve = s;

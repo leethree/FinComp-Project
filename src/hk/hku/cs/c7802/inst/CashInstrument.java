@@ -24,7 +24,7 @@ public class CashInstrument extends InterestRateInstrument {
 
 	@Override
 	public String toString() {
-		return super.toString() + " [" + maturity + "]";
+		return super.toString() + " M" + maturity + ".";
 	}
 	
 	public static class CashInstrumentBuilder extends InterestRateInstrumentBuilder{

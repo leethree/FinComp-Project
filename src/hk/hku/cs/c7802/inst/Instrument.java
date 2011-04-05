@@ -22,7 +22,7 @@ public abstract class Instrument {
 	
 	@Override
 	public String toString() {
-		return name + "@" + timestamp.toString();
+		return name + " T" + timestamp.toString();
 	}
 	
 	public static abstract class InstrumentBuilder {

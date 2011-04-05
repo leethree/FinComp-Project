@@ -8,9 +8,9 @@ import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.SimpleEvaluator;
 import hk.hku.cs.c7802.inst.CashInstrument;
 import hk.hku.cs.c7802.rate.SimpleRate;
+import hk.hku.cs.c7802.test.util.ConstantCurve;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CashInstrumentTest {
@@ -21,52 +21,29 @@ public class CashInstrumentTest {
 								.maturingAfter(new TimeSpan(0, 1, 0))
 								.usingRateType(new SimpleRate(DayBase.ACT365))
 								.rate(0.05)
-								.withTimestamp(TimePoint.now())
+								.withTimestamp(TimePoint.parse("2011-03-31 14:59:10 GMT+8"))
 								.withName("HIBOR-1M")
 								.build();
 		CurveTest test = new CurveTest();
 		test.setUp();
 		this.curve = test.getCurve();
+		this.constcurve = new ConstantCurve();
 	}
 
-	@Ignore
 	@Test
 	public void testValueWith() {
-		assertEquals(0.959542, cash.valueWith(new SimpleEvaluator(curve)).getAmount(), 0.000001);
+		assertEquals(1.003973, cash.valueWith(new SimpleEvaluator(constcurve)).getAmount(), 0.000001);
 		
-//		cash.valueWith(new Instrument.InstrumentEvaluator() {
-//			
-//			@Override
-//			public CashFlow getValue() {
-//				return null;
-//			}
-//			
-//			@Override
-//			public CashStreamVisitor getCashStreamVisitor() {
-//				return new CashStreamVisitor() {
-//					
-//					@Override
-//					public void visit(CashFlow cf, TimePoint tp) {
-//						System.out.println(cf + "@" + tp);
-//					}
-//					
-//					@Override
-//					public void before() {
-//					}
-//					
-//					@Override
-//					public void after() {
-//					}
-//				};
-//			}
-//		});
+		// TODO number to be checked manually
+		assertEquals(0.964400, cash.valueWith(new SimpleEvaluator(curve)).getAmount(), 0.000001);
 	}
 
 	@Test
 	public void testToString() {
-		System.out.println(cash.toString());
+		assertEquals("HIBOR-1M T2011-03-31 @simple:0.05 M1m.", cash.toString());
 	}
 
 	private CashInstrument cash;
 	private YieldCurve curve;
+	private YieldCurve constcurve;
 }
