@@ -51,24 +51,28 @@ public class Main {
 	private static Option parseOption(String[] args, int i, String optionType) {
 		if(args[i].equals("call")) {
 			if(args.length - i == 2) {
+				// FIXME put the real Call here when the framework is fixed
 				// return new Call(double(args[i+1]), European/American);				
 				return null;
 			}
 		}
 		else if(args[i].equals("put")) {
 			if(args.length - i == 2) {
+				// FIXME put the reall Put here when the framework is fixed				
 				// return new Put(double(args[i+1]), European/American);
 				return null;
 			}
 		}
 		else if(args[i].equals("A")) {
 			if(args.length - i == 4) {
+				// FIXME put the real Option A here when the framework is fixed				
 				// return new OptionA(double(args[i+1]), double(args[i+2]), double(args[i+3]), European/American);
 				return null;
 			}
 		}
 		else if(args[i].equals("B")) {
 			if(args.length - i == 4) {
+				// FIXME put the real OptionB here when the framework is fixed				
 				// return new OptionB(double(args[i+1]), double(args[i+2]), double(args[i+3]), European/American);
 				return null;
 			}
@@ -124,10 +128,11 @@ public class Main {
 			String[] typeRecord = getTypeRecord(curveSpec, record[0]);
 			if(typeRecord != null) {
 				System.out.println(String.format("%s %s %f\n", typeRecord[0], typeRecord[1], rate));
+				// FIXME Put the record into the yield curve.
 			}
 			else {
 				System.err.println("Error at record, invalid ID");
-			}
+			}			
 		}
 		
 		
