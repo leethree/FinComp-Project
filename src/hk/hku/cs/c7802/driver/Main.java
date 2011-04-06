@@ -1,9 +1,20 @@
 package hk.hku.cs.c7802.driver;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+
+import hk.hku.cs.c7802.base.conv.DayBase;
+import hk.hku.cs.c7802.base.time.TimeDiff;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.base.time.TimePointFormatException;
+import hk.hku.cs.c7802.curve.CurveConfig;
+import hk.hku.cs.c7802.curve.SimpleCurve;
+import hk.hku.cs.c7802.curve.YieldCurve;
+import hk.hku.cs.c7802.curve.util.LinearInterpolator;
 import hk.hku.cs.c7802.option.CallPutOption;
 import hk.hku.cs.c7802.option.Option;
+import hk.hku.cs.c7802.rate.CompoundRate;
 
 public class Main {
 	
@@ -23,7 +34,9 @@ public class Main {
 			"\t -v Value-of-the-option        # once given we will use it to value the sigma\n" +
 			"\t option-class-name arg1 arg2 ...\n" +
 			" # List all available options\n" +
-			cli + " -l"
+			cli + " -l" +
+			" # Show available data format\n" +
+			cli + " -df"
 		);
 	}
 	
@@ -63,6 +76,149 @@ public class Main {
 		return null;
 	}
 	
+	public static String[] getTypeRecord(List<String[]> curveSpec, String ID) {
+		for(String[] r: curveSpec) {
+			if(r.length > 2 && r[2] != null && r[2].equals(ID)) {
+				return r;
+			}
+		}
+		return null;
+	}
+	
+	public static void yieldCurve(String curveSpecFilename, String curveDataInputFilename) {
+		System.err.println("Error: not yet implemented");
+		
+		List<String[]> curveData;
+		List<String[]> curveSpec;
+		try {
+			String[] curveSpecHead = new String[3];
+			String[] curveDataHead = new String[2];
+			curveSpec = new CSVParser(curveSpecFilename, curveSpecHead).toList();
+			curveData = new CSVParser(curveDataInputFilename, curveDataHead).toList();
+			if(!(curveSpecHead[0].equals("InstrumentType") &&
+				curveSpecHead[1].equals("subType") &&
+				curveSpecHead[2].equals("ID") &&
+				curveDataHead[0].equals("ID") &&
+				curveDataHead[1].equals("Rate"))) {
+				System.err.println("Warning: the scheme of the curveSpec/curveData csv is not standard");
+			}
+			
+			
+		} catch (FileNotFoundException e) {	
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		CurveConfig config = new CurveConfig();
+		config.setCurveRateType(new CompoundRate(DayBase.ACT365, 4));
+		config.setInterpolator(new LinearInterpolator());
+		SimpleCurve s = new SimpleCurve(TimePoint.now(), config);
+		// s.addDataPoint(new TimeDiff(50), 0.92);
+		// s.addDataPoint(new TimeDiff(1), 0.999);
+		for(String[] record: curveData) {
+			int id = Integer.parseInt(record[0]);	// ID
+			double rate = Double.parseDouble(record[1]);
+			String[] typeRecord = getTypeRecord(curveSpec, record[0]);
+			if(typeRecord != null) {
+				System.out.println(String.format("%s %s %f\n", typeRecord[0], typeRecord[1], rate));
+			}
+			else {
+				System.err.println("Error at record, invalid ID");
+			}
+		}
+		
+		
+		YieldCurve curve = s;		
+		double df = curve.disFactorAfter(new TimeDiff(20));
+		System.out.println(df);		
+	}
+	
+	private static void handleYieldCurve(String args[]) {
+		String action = args[0];
+		String curveSpec = null;
+		String curveData = null;
+		for(int i = 1; i < args.length; i++) {
+			if(args[i].equals("-s")) {
+				curveSpec = args[i+1];
+				i++;
+			}
+			else if(args[i].equals("-i")) {
+				curveData = args[i+1];
+				i++;
+			}
+			else {
+				usage();
+				break;
+			}
+		}
+		if(curveSpec != null && curveData != null) {
+			yieldCurve(curveSpec, curveData);					
+		}
+		else {
+			usage();
+		}
+	}
+
+	private static void handleOptionEvaluation(String args[]) {
+		String action = args[0];
+		String optionType = "European";
+		Double stockPrice = null;
+		TimePoint expiryDate = null;
+		Double riskFreeRate = null;
+		Double sigma = null;
+		Double optionValue = null;
+		Option option = null;
+		for(int i = 1; i < args.length; i++) {
+			try {
+				if(args[i].equals("-a")) {
+					optionType = "American";
+				}
+				else if(args[i].equals("-S")) {
+					i++;
+					stockPrice = Double.parseDouble(args[i]); 
+				}
+				else if(args[i].equals("-E")) {
+					i++;
+					expiryDate = TimePoint.parse(args[i]);
+				}
+				else if(args[i].equals("-r")) {
+					i++;
+					riskFreeRate = Double.parseDouble(args[i]);
+				}
+				else if(args[i].equals("-s")) {
+					i++;
+					sigma = Double.parseDouble(args[i]);
+				}
+				else if(args[i].equals("-v")) {
+					i++;
+					optionValue = Double.parseDouble(args[i]);
+				}
+				else {
+					option = parseOption(args, i, optionType);
+					break;
+				}
+			}
+			catch(NumberFormatException e) {
+				System.err.println(String.format("Wrong number format: '%s' '%s'", args[i-1], args[i]));
+			} catch (TimePointFormatException e) {
+				System.err.println(String.format("Wrong date format: '%s' '%s'", args[i-1], args[i]));
+			}
+		}
+		if (stockPrice == null || expiryDate == null || riskFreeRate == null
+				|| option == null || (sigma == null && optionValue == null)) {
+			System.err.println("Wrong format!");
+			if(stockPrice == null) System.err.println("Please specify: -S StockPrice!");
+			if(expiryDate == null) System.err.println("Please specify: -E ExpiryDate!");
+			if(riskFreeRate == null) System.err.println("Please specify: -r RiskFreeRate!");
+			if(sigma == null && optionValue ==null) 
+				System.err.println("Please specify: -s sigma or -v optionValue!");
+			if(option == null) System.err.println("Please specify: option-name arg1 ...!");
+		}
+	}
+	
 	public static void main(String args[]) {
 		if(args.length > 0) {
 			if(args[0].equals("-l")) {
@@ -72,64 +228,11 @@ public class Main {
 				showDateFormat();
 			}
 			else if(args[0].equals("-y")) {
-				String action = args[0];
+				handleYieldCurve(args);
 			}
 			else if(args[0].equals("-bs") || args[0].equals("-bt") 
 					|| args[0].equals("-mc") ) {
-				String action = args[0];
-				String optionType = "European";
-				Double stockPrice = null;
-				TimePoint expiryDate = null;
-				Double riskFreeRate = null;
-				Double sigma = null;
-				Double optionValue = null;
-				Option option = null;
-				for(int i = 1; i < args.length; i++) {
-					try {
-						if(args[i].equals("-a")) {
-							optionType = "American";
-						}
-						else if(args[i].equals("-S")) {
-							i++;
-							stockPrice = Double.parseDouble(args[i]); 
-						}
-						else if(args[i].equals("-E")) {
-							i++;
-							expiryDate = TimePoint.parse(args[i]);
-						}
-						else if(args[i].equals("-r")) {
-							i++;
-							riskFreeRate = Double.parseDouble(args[i]);
-						}
-						else if(args[i].equals("-s")) {
-							i++;
-							sigma = Double.parseDouble(args[i]);
-						}
-						else if(args[i].equals("-v")) {
-							i++;
-							optionValue = Double.parseDouble(args[i]);
-						}
-						else {
-							option = parseOption(args, i, optionType);
-							break;
-						}
-					}
-					catch(NumberFormatException e) {
-						System.err.println(String.format("Wrong number format: '%s' '%s'", args[i-1], args[i]));
-					} catch (TimePointFormatException e) {
-						System.err.println(String.format("Wrong date format: '%s' '%s'", args[i-1], args[i]));
-					}
-				}
-				if (stockPrice == null || expiryDate == null || riskFreeRate == null
-						|| option == null || (sigma == null && optionValue == null)) {
-					System.err.println("Wrong format!");
-					if(stockPrice == null) System.err.println("Please specify: -S StockPrice!");
-					if(expiryDate == null) System.err.println("Please specify: -E ExpiryDate!");
-					if(riskFreeRate == null) System.err.println("Please specify: -r RiskFreeRate!");
-					if(sigma == null && optionValue ==null) 
-						System.err.println("Please specify: -s sigma or -v optionValue!");
-					if(option == null) System.err.println("Please specify: option-name arg1 ...!");
-				}
+				handleOptionEvaluation(args);
 			}
 			else {
 				usage();
@@ -141,8 +244,8 @@ public class Main {
 	}
 
 	private static void showDateFormat() {
-		// TODO Auto-generated method stub
-		
+		// FIXME this is not correct
+		System.err.println("2011-03-21 17:18:42 GMT+08:00");
 	}
 
 }
