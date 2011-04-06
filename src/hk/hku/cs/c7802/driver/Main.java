@@ -28,6 +28,7 @@ import hk.hku.cs.c7802.option.Option.OptionBuilder;
 import hk.hku.cs.c7802.option.OptionAlpha;
 import hk.hku.cs.c7802.option.OptionBeta;
 import hk.hku.cs.c7802.option.OptionEvaluator;
+import hk.hku.cs.c7802.option.ImpliedVolatilityEvaluator;
 import hk.hku.cs.c7802.option.VanillaOption.VanillaOptionBuilder;
 import hk.hku.cs.c7802.rate.CompoundRate;
 import hk.hku.cs.c7802.stock.Stock;
@@ -334,9 +335,8 @@ public class Main {
 			System.out.println("optionValue = " + optionValue);
 		}
 		else {	// volatility != null			
-			// TODO We need a volatility evauluator here.
-			assert(BlackScholesModel.class.isInstance(baseModel));
-			sigma = ((BlackScholesModel)baseModel).implyVolatility(option, CashFlow.create(optionValue));
+			assert(ImpliedVolatilityEvaluator.class.isInstance(baseModel));
+			sigma = ((ImpliedVolatilityEvaluator)baseModel).implyVolatility(option, CashFlow.create(optionValue));
 			System.out.println("sigma = " + sigma);
 		}
 		

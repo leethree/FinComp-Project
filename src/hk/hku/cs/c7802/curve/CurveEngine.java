@@ -16,7 +16,7 @@ public class CurveEngine {
 	}
 	
 	public YieldCurve buildFrom(MarketDataPool pool, TimePoint ref) {
-		// TODO
+		// TODO not yet implemented
 		CurveConfig config = new CurveConfig();
 		config.setCurveRateType(new CompoundRate(DayBase.ACT365, 4));
 		config.setInterpolator(new LinearInterpolator());

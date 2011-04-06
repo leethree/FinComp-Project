@@ -16,7 +16,7 @@ public class BinomialModel extends BaseModel implements OptionEvaluator {
 		double initPrice = data.getPrice(option.getStock());
 		// Volatility of the stock
 		double volatility = data.getVolatilities(option.getStock());
-		// TODO Auto-generated method stub
+		// TODO Not yet implemented
 		return null;
 	}
 }

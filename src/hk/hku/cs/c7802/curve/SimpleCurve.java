@@ -45,7 +45,7 @@ public class SimpleCurve implements YieldCurve{
 				// save interpolation result
 				dfpoints.put(key(diff), ret);
 			} catch (OutOfRangeException e) {
-				// TODO
+				// TODO throw more friendly exception
 				e.printStackTrace();
 				return 0;
 			}

@@ -15,14 +15,14 @@ public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 		double initPrice = data.getPrice(option.getStock());
 		// Volatility of the stock
 		double volatility = data.getVolatilities(option.getStock());
-		// TODO Auto-generated method stub
+		// TODO Not yet implemented
 		return null;
 	}
 	
 	public CashFlow evaluate(VanillaOption option) {
 		if (!option.isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Monte Carlo Model.");
-		// TODO Auto-generated method stub
+		// TODO Not yet implemented
 		return null;
 	}
 

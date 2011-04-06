@@ -1,7 +1,5 @@
 package hk.hku.cs.c7802.base.time;
 
-import hk.hku.cs.c7802.base.BaseException;
-
 public class TimeDiff extends TimeSpan {
 
 	public TimeDiff(long day) {
