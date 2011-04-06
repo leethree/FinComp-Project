@@ -43,14 +43,14 @@ public abstract class CashFlow {
 	}
 	
 	public static CashFlow create(double amount) {
-		if (amount != 0)
-			return new FixedCashFlow(defaultCur, amount);
-		else
-			return createEmpty();
+		return create(defaultCur, amount);
 	}
 	
-	public static CashFlow createForeign(Currency cur, double amount) {
-		return new FixedCashFlow(cur, amount);
+	public static CashFlow create(Currency cur, double amount) {
+		if (amount != 0)
+			return new FixedCashFlow(cur, amount);
+		else
+			return createEmpty();
 	}
 	
 	public static CashFlow createEmpty() {

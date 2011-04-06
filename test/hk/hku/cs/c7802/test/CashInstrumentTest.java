@@ -1,16 +1,12 @@
 package hk.hku.cs.c7802.test;
 
 import static org.junit.Assert.*;
-import hk.hku.cs.c7802.base.cash.CashFlow;
-import hk.hku.cs.c7802.base.cash.CashStream.CashStreamVisitor;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.base.time.TimeSpan;
 import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.SimpleEvaluator;
 import hk.hku.cs.c7802.inst.CashInstrument;
-import hk.hku.cs.c7802.inst.Instrument;
-import hk.hku.cs.c7802.rate.CompoundRate;
 import hk.hku.cs.c7802.rate.SimpleRate;
 
 import org.junit.Before;
@@ -22,9 +18,9 @@ public class CashInstrumentTest {
 	@Before
 	public void setUp() throws Exception {
 		cash = (CashInstrument) CashInstrument.create()
+								.maturingAfter(new TimeSpan(0, 1, 0))
 								.usingRateType(new SimpleRate(DayBase.ACT365))
 								.rate(0.05)
-								.maturingAfter(new TimeSpan(0, 1, 0))
 								.withTimestamp(TimePoint.now())
 								.withName("HIBOR-1M")
 								.build();
@@ -33,6 +29,7 @@ public class CashInstrumentTest {
 		this.curve = test.getCurve();
 	}
 
+	@Ignore
 	@Test
 	public void testValueWith() {
 		assertEquals(0.959542, cash.valueWith(new SimpleEvaluator(curve)).getAmount(), 0.000001);

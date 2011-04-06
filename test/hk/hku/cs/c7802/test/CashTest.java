@@ -34,8 +34,8 @@ public class CashTest {
 	
 	@Test(expected=BaseRuntimeException.class)
 	public void testPlusEx() {
-		CashFlow c = CashFlow.createForeign(Currency.getInstance("HKD"), 50);
-		CashFlow d = CashFlow.createForeign(Currency.getInstance("USD"), 50);
+		CashFlow c = CashFlow.create(Currency.getInstance("HKD"), 50);
+		CashFlow d = CashFlow.create(Currency.getInstance("USD"), 50);
 		d.plus(c);
 	}
 

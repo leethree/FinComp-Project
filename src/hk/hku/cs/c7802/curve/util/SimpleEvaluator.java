@@ -4,7 +4,7 @@ import hk.hku.cs.c7802.base.cash.CashFlow;
 import hk.hku.cs.c7802.base.cash.CashStream.CashStreamVisitor;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.curve.YieldCurve;
-import hk.hku.cs.c7802.inst.Instrument.InstrumentEvaluator;
+import hk.hku.cs.c7802.inst.InterestRateInstrument.InstrumentEvaluator;
 
 public class SimpleEvaluator implements InstrumentEvaluator {
 
