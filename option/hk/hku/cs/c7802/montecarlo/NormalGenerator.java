@@ -2,10 +2,11 @@ package hk.hku.cs.c7802.montecarlo;
 
 import java.util.Random;
 
-public abstract class NormalGenerator {
+public abstract class NormalGenerator implements RandomGenerator{
 	long seed;
 	Random random = new Random();
 	
+	@Override
 	public void setSeed(long seed) {
 		this.seed = seed;
 		random.setSeed(seed);
@@ -21,6 +22,7 @@ public abstract class NormalGenerator {
 	/*
 	 * Return a normal random number distributed as N(0, 1)
 	 */	
+	@Override
 	public abstract double next();
 	
 	public static class BigNumberAlgorithm extends NormalGenerator{

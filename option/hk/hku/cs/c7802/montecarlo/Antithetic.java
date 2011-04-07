@@ -3,11 +3,11 @@ package hk.hku.cs.c7802.montecarlo;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Antithetic extends NormalGenerator{
-	private NormalGenerator ng;
+public class Antithetic implements RandomGenerator{
+	private RandomGenerator rg;
 	private ArrayList<Double> cache;
-	public Antithetic(NormalGenerator ng) {
-		this.ng = ng;
+	public Antithetic(RandomGenerator rg) {
+		this.rg = rg;
 		cache = new ArrayList<Double>();
 	}
 	
@@ -16,7 +16,7 @@ public class Antithetic extends NormalGenerator{
 		cache.clear();
 		odd = false;
 		ite = null;
-		ng.setSeed(seed);
+		rg.setSeed(seed);
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public class Antithetic extends NormalGenerator{
 			return - ite.next();
 		}
 		else {
-			double ret = ng.next();
+			double ret = rg.next();
 			cache.add(ret);
 			return ret;
 		}

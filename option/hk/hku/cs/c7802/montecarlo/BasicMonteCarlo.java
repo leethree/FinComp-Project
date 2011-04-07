@@ -8,7 +8,7 @@ public class BasicMonteCarlo {
 		this.N = N;
 	}
 
-	public double value(NormalGenerator ng, MonteCarloOption option, double S0, double K, double T, double rateOfYear, double sigma) {
+	public double value(RandomGenerator ng, MonteCarloOption option, double S0, double K, double T, double rateOfYear, double sigma) {
 		double deltaT = T / N;
 		// rate * DeltaT
 		double rateDeltaT = rateOfYear * deltaT;
@@ -24,38 +24,58 @@ public class BasicMonteCarlo {
 			for(int j = 0; j < N; j++) {
 				double rand = ng.next();
 				double deltaSOverS = rateDeltaT + rand * sigmaRootDeltaT;				
-				S = S * (1 + deltaSOverS);				
+				S *= (1 + deltaSOverS);				
 				if(S > Smax)
 					Smax = S;
 				if(S < Smin)
 					Smin = S;
 			}
 			double payout = option.payout(Smax, Smin, S);
-			if(Antithetic.class.isInstance(ng))
-				((Antithetic)ng).nextPath();
 			sum += payout;
 			sumSq += payout * payout;
+
+			if(Antithetic.class.isInstance(ng))
+				((Antithetic)ng).nextPath();
 		}
 		
-		estimateError(sum, sumSq);
+		this.lastSum = sum;
+		this.lastSumSq = sumSq;
 		
 		return sum / M;
 	}
+	
+	private double lastSum;
+	private double lastSumSq;
+	private double[] I = new double[]{0.1, 0.05, 0.025, 0.01, 0.005, 0.0005};
+	private double[] Z = new double[]{1.282, 1.645, 1.96, 2.326, 2.576, 3.291};
+	
+	/*
+	 * confidentLevel must locate within [0, I.length).
+	 * Or else I will move it into the range.
+	 */
+	public double error(int confidentLevel) {
+		if(confidentLevel < 0)
+			confidentLevel = 0;
+		else if(confidentLevel >= I.length)
+			confidentLevel = I.length - 1;
+		return estimateError(lastSum, lastSumSq, confidentLevel);
+	}
 
-	private void estimateError(double sum, double sumSq) {
+	private double estimateError(double sum, double sumSq, int level) {
 		double miu = sum / M;
-		double omigaSq = (sumSq - 2 * sum * miu + M * miu * miu) / (M - 1);
+		double omigaSq = sumSq / M - miu * miu;
 		double omiga = Math.sqrt(omigaSq);
-		System.err.println("omiga/sqrt(M) = " + omiga / Math.sqrt(M));
-		double[] I = new double[]{0.1, 0.05, 0.025, 0.01, 0.005, 0.0005};
-		double[] Z = new double[]{1.282, 1.645, 1.96, 2.326, 2.576, 3.291};
-		int i = 0;
-		for(double zi:Z) {
-			System.err.println(String.format("%.2f%% conf: %.6f < v < %.6f",
-				100.0 * (1 - I[i]),
-				miu - zi * omiga / Math.sqrt(M),
-				miu + zi * omiga / Math.sqrt(M)));
-			i++;
-		}
+
+//		// Debug
+//		System.err.println("V = " + omigaSq );
+//		int i = 0;
+//		for(double zi:Z) {
+//			System.err.println(String.format("%.2f%% conf: %.6f < v < %.6f",
+//				100.0 * (1 - I[i]),
+//				miu - zi * omiga / Math.sqrt(M),
+//				miu + zi * omiga / Math.sqrt(M)));
+//			i++;
+//		}
+		return Z[level] * omiga / Math.sqrt(M);
 	}
 }
