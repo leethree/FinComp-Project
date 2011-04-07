@@ -13,7 +13,9 @@ import org.junit.runners.Suite;
 	CurveTest.class,
 	CashInstrumentTest.class,
 	FRATest.class,
-	SwapTest.class
+	SwapTest.class,
+	NormalGeneratorTest.class,
+	MonteCarloTest.class,
 })
 public class AllTests {
 

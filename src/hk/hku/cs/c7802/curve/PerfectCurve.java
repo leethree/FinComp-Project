@@ -3,17 +3,17 @@ package hk.hku.cs.c7802.curve;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimeDiff;
 import hk.hku.cs.c7802.base.time.TimePoint;
-import hk.hku.cs.c7802.rate.ContinuousCompoundRate;
+import hk.hku.cs.c7802.rate.ContinuousRate;
 
 public class PerfectCurve implements YieldCurve{
 	private TimePoint timepoint;
-	private ContinuousCompoundRate rateType;
+	private ContinuousRate rateType;
 	private DayBase dayBase;
 	private double rate;
 	
 	public PerfectCurve(TimePoint timepoint, double rate, DayBase dayBase) {
 		this.timepoint = timepoint;
-		rateType = new ContinuousCompoundRate(dayBase);
+		rateType = new ContinuousRate(dayBase);
 		this.rate = rate;
 		this.dayBase = dayBase;
 	}
@@ -38,7 +38,7 @@ public class PerfectCurve implements YieldCurve{
 	}
 	
 	public double disFactorAfter(double deltaT) {
-		return Math.pow(1 + rate, -deltaT);
+		throw new RuntimeException("Not yet implemented");
 	}
 
 }

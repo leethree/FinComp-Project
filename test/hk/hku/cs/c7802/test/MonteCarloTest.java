@@ -27,23 +27,24 @@ public class MonteCarloTest {
 		double T = 6.4;
 		double r = 0.09;
 		double sigma = 0.20;
-		BasicMonteCarlo mc = new BasicMonteCarlo(100000, 1000);
+		BasicMonteCarlo mc = new BasicMonteCarlo(10000, 100);
 		NormalGenerator bm = new NormalGenerator.BoxMuller2();
 		NormalGenerator an_bm = new Antithetic(new NormalGenerator.BoxMuller2());
+		// TODO make sure Antithetic is with a smaller sigma than non Antithetic
 		NormalGenerator[] ngs = new NormalGenerator[]{bm, an_bm};
 		bm.setSeed(1025);
 		an_bm.setSeed(1025);
 		ArrayList<Double> result = new ArrayList<Double>();
+		double expected = S0 * Math.exp(r * T); 
 		for(NormalGenerator ng: ngs) {
 			double v = mc.value(ng, option, S0, K, T, r, sigma);
 			System.err.println(v);
-			System.err.println(S0 * Math.pow(1+r, T) + " (expected)");
+			System.err.println(expected + " (expected)");
 			System.err.println();
 			result.add(v);
 		}
-		double expected = S0 * Math.pow(1+r, T); 
 		for(double v: result) {
-			assertEquals(expected, v, 0.01);
+			assertEquals(expected, v, 0.1);
 		}
 	}
 }
