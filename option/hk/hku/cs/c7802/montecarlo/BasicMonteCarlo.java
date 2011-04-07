@@ -34,8 +34,7 @@ public class BasicMonteCarlo {
 			sum += payout;
 			sumSq += payout * payout;
 
-			if(Antithetic.class.isInstance(ng))
-				((Antithetic)ng).nextPath();
+			ng.nextPath();
 		}
 		
 		this.lastSum = sum;

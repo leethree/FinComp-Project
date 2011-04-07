@@ -25,6 +25,10 @@ public abstract class NormalGenerator implements RandomGenerator{
 	@Override
 	public abstract double next();
 	
+	public void nextPath() {
+		// do nothing
+	}
+	
 	public static class BigNumberAlgorithm extends NormalGenerator{
 
 		@Override
