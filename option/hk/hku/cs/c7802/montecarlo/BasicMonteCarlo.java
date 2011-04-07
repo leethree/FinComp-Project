@@ -7,30 +7,45 @@ public class BasicMonteCarlo {
 		this.M = M;
 		this.N = N;
 	}
-
-	public double value(RandomGenerator ng, MonteCarloOption option, double S0, double K, double T, double rateOfYear, double sigma) {
+	
+	private double[] core(RandomGenerator ng, double T, double rateOfYear, double sigma, int dataIndex) {
 		double deltaT = T / N;
 		// rate * DeltaT
 		double rateDeltaT = rateOfYear * deltaT;
 		// sigma * sqrt(DeltaT)
 		double sigmaRootDeltaT = sigma * Math.sqrt(deltaT);
+
+		double S = 1.0;
+		double Smax = S;
+		double Smin = S;
+		for(int j = 0; j < N; j++) {
+			double rand = ng.next();
+			double deltaSOverS = rateDeltaT + rand * sigmaRootDeltaT;				
+			S *= (1 + deltaSOverS);				
+			if(S > Smax)
+				Smax = S;
+			if(S < Smin)
+				Smin = S;
+		}
+		return new double[] {Smax, Smin, S};
+	}
+	
+	public int numberOfRandomNeeded() {
+		return M * N;
+	}
+	
+	public double value(RandomGenerator ng, MonteCarloOption option, double S0, double K, double T, double rateOfYear, double sigma) {
 		double sum = 0;
 		double sumSq = 0;
 		
 		for(int i = 0; i < M; i++) {
-			double S = S0;
-			double Smax = S;
-			double Smin = S;
-			for(int j = 0; j < N; j++) {
-				double rand = ng.next();
-				double deltaSOverS = rateDeltaT + rand * sigmaRootDeltaT;				
-				S *= (1 + deltaSOverS);				
-				if(S > Smax)
-					Smax = S;
-				if(S < Smin)
-					Smin = S;
-			}
-			double payout = option.payout(Smax, Smin, S);
+			double change[] = core(ng, T, rateOfYear, sigma, i);
+			
+			double Smax = change[0];
+			double Smin = change[1];
+			double S = change[2];
+			
+			double payout = option.payout(Smax * S0, Smin * S0, S * S0);
 			sum += payout;
 			sumSq += payout * payout;
 
