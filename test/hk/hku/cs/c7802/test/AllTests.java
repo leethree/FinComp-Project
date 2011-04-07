@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
 	MonteCarloTest.class,
 	BlackScholesTest.class,
 	NewtonsMethodTest.class,
+	DriverTest.class
 })
 public class AllTests {
 

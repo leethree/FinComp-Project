@@ -11,6 +11,7 @@ public class BlackScholesFunctions {
 		this.r = r;			
 	}
 	
+	// static fields and functions, unrelated to S0, K, T, r
 	// TODO Dear reviewer, would you please have a check these numbers
 	final static double beta  = 0.2316419;
 	final static double a1 = 0.319381530;
@@ -33,24 +34,29 @@ public class BlackScholesFunctions {
 		return Math.exp(- x * x / 2)  / Math.sqrt(2 * Math.PI);
 	}
 	
+	// related to S0, K, T, r
 	public double d1Numerator(double sigma) {
 		return Math.log(S0 / K) + (r + sigma * sigma / 2) * T;
 	}
 	
+	// d2's derivative
 	public double dd2(double sigma) {
 		return - d1Numerator(sigma) / (sigma * sigma * Math.sqrt(T));
 	}
 	
+	// d1's derivative	
 	public double dd1(double sigma) {
 		return Math.sqrt(T) + dd2(sigma);
 	}
 	
+	// return {dd1, dd2}
 	public double[] dcore(double sigma) {
 		double dd2_ = dd2(sigma);
 		double dd1_ = Math.sqrt(T) + dd2_;
 		return new double[] {dd1_, dd2_};
 	}
 
+	// return {d1, d2}
 	public double[] core(double sigma) {
 		double d1Dominator = sigma * Math.sqrt(T);
 		double d1 = d1Numerator(sigma) / d1Dominator;
@@ -67,6 +73,7 @@ public class BlackScholesFunctions {
 			return 0;
 	}
 	
+	// call's derivative
 	public double dcall(double sigma) {
 		double[] d = core(sigma);
 		double[] dd = dcore(sigma);
@@ -81,7 +88,8 @@ public class BlackScholesFunctions {
 		else
 			return 0;
 	}
-	
+
+	// put's derivative	
 	public double dput(double sigma) {
 		double[] d = core(sigma);
 		double[] dd = dcore(sigma);
@@ -111,7 +119,7 @@ public class BlackScholesFunctions {
 		double p;
 		public Put(double p) {
 			this.p = p;
-		}		
+		}
 		@Override
 		public double gety(double x) {
 			return put(x) - p;

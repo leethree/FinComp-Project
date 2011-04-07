@@ -7,6 +7,7 @@ import org.junit.Test;
 import hk.hku.cs.c7802.montecarlo.Antithetic;
 import hk.hku.cs.c7802.montecarlo.BasicMonteCarlo;
 import hk.hku.cs.c7802.montecarlo.CachedRandomGenerator;
+import hk.hku.cs.c7802.montecarlo.MonteCarloCallPutPredictor;
 import hk.hku.cs.c7802.montecarlo.MonteCarloOption;
 import hk.hku.cs.c7802.montecarlo.NormalGenerator;
 import hk.hku.cs.c7802.montecarlo.RandomGenerator;
@@ -101,6 +102,24 @@ public class MonteCarloTest {
 	
 	@Test
 	public void testMonteCarloSimulationOnBenchmark() {
-		// TODO this cannot be tested until the Black Scholes is finished.
+		double S0 = 89.31;
+		double K = 95;
+		double T = 1.96;
+		double r = 0.03;
+		double call = 30;
+		
+		double sigma = 0.622320802564423;
+
+		BasicMonteCarlo mc = new BasicMonteCarlo(2000, 1000);
+		CachedRandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
+		RandomGenerator rg = new Antithetic(crg);
+		rg.setSeed(2);
+		double v = mc.value(rg, new MonteCarloOption.Call(K), S0, K, T, r, sigma);
+		double error0 = mc.error(0);
+		double error = mc.error(5);
+		
+		assertEquals(0, error0 / call, 0.09);
+		assertEquals(0, error / call, 0.22);
+		assertEquals(call, v, error);
 	}
 }

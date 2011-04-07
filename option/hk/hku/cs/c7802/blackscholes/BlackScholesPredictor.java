@@ -1,6 +1,8 @@
 package hk.hku.cs.c7802.blackscholes;
 
-public class BlackScholesPredictor {
+import hk.hku.cs.c7802.model.CallPutPredictor;
+
+public class BlackScholesPredictor implements CallPutPredictor {
 	BlackScholesFunctions bsf;
 	double sigma;
 	

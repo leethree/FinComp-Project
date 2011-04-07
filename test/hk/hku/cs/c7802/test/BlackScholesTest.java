@@ -17,26 +17,11 @@ import hk.hku.cs.c7802.montecarlo.RandomGenerator;
 public class BlackScholesTest {
 	BasicMonteCarlo mc = new BasicMonteCarlo(1000, 1000);
 	RandomGenerator rg = new Antithetic(new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded()));
-
-	public static class MonteCarloCall implements MonteCarloOption {
-		double K;
-		public MonteCarloCall(double K) {
-			this.K = K;
-		}
-		@Override
-		public double payout(double Smax, double Smin, double S) {
-			if(S > K)
-				return S - K;
-			else
-				return 0;
-		}
-	};
-
 	
 	public void testCall(double S0, double K, double T, double r, double sigma, 
 			double expected, double errorBS, double errorMC) {
 		
-		MonteCarloOption option = new MonteCarloCall(K);
+		MonteCarloOption option = new MonteCarloOption.Call(K);
 		
 		BlackScholesPredictor bs = new BlackScholesPredictor(S0, K, T, r, sigma);
 		double v1 = bs.call();		
@@ -119,7 +104,7 @@ public class BlackScholesTest {
 	}
 	
 	@Test
-	public void testPorject2() {
+	public void testBlackScholesOnBenchmark() {
 		double S0 = 89.31;
 		double K = 95;
 		double T = 1.96;
@@ -127,7 +112,7 @@ public class BlackScholesTest {
 		double call = 30;
 		
 		double sigma = new BlackScholesSolver(S0, K, T, r).volatilityFromCall(call);
-		System.err.println("Sigma = " + sigma);
+		assertEquals(0.622320802564423, sigma, 0.0001);
 		double evaluatedCall = new BlackScholesPredictor(S0, K, T, r, sigma).call();
 		assertEquals(call, evaluatedCall, 0.0001);
 	}

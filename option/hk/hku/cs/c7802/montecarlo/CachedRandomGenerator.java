@@ -20,7 +20,8 @@ public class CachedRandomGenerator implements RandomGenerator{
 
 	@Override
 	public void setSeed(long seed) {
-		if(seed != this.seed) {			
+		if(seed != this.seed) {
+			cache = null;
 			cache = new double[cacheSize];
 			this.head = 0;
 			this.tail = 0;
