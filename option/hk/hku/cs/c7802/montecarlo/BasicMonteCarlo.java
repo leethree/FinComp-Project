@@ -78,6 +78,8 @@ public class BasicMonteCarlo {
 	private double estimateError(double sum, double sumSq, int level) {
 		double miu = sum / M;
 		double omigaSq = sumSq / M - miu * miu;
+		if(omigaSq < 0)
+			omigaSq = 0;
 		double omiga = Math.sqrt(omigaSq);
 
 //		// Debug

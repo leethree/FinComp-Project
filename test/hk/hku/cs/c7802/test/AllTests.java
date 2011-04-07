@@ -16,6 +16,8 @@ import org.junit.runners.Suite;
 	SwapTest.class,
 	NormalGeneratorTest.class,
 	MonteCarloTest.class,
+	BlackScholesTest.class,
+	NewtonsMethodTest.class,
 })
 public class AllTests {
 
