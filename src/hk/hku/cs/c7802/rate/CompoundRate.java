@@ -14,7 +14,7 @@ public class CompoundRate extends InterestType {
 
 	// TODO test me
 	@Override
-	protected double payOutAfter(double rate, TimeDiff diff) {
+	public double payOutAfter(double rate, TimeDiff diff) {
 		return Math.pow(1 + rate / frequency, frequency * dcf(diff)) - 1;
 	}
 
@@ -25,5 +25,17 @@ public class CompoundRate extends InterestType {
 		return frequency * (acc - 1);
 	}
 
+	@Override
+	public String toString() {
+		if (frequency == 4)
+			return "quarterly-compounding";
+		else if (frequency == 2)
+			return "semiannual-compounding";
+		else if (frequency == 1)
+			return "annual-compounding";
+		else
+			return frequency + "-compounding";
+	}
+	
 	private int frequency;
 }

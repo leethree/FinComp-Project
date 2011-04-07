@@ -3,27 +3,25 @@ package hk.hku.cs.c7802.rate;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimeDiff;
 
-public class SimpleRate extends InterestType {
+public class ContinuousRate extends InterestType {
 
-	public SimpleRate(DayBase base) {
+	public ContinuousRate(DayBase base) {
 		super(base);
 	}
 
-	// TODO test me
 	@Override
 	public double payOutAfter(double rate, TimeDiff diff) {
-		return rate * dcf(diff);
+		return Math.expm1(rate * dcf(diff));
 	}
 
-	// TODO test me
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
-		return (1 / df - 1) / dcf(diff);
+		return Math.log(1 / df) / dcf(diff);
 	}
 
 	@Override
 	public String toString() {
-		return "simple";
+		return "continuous-compounding";
 	}
-	
+
 }

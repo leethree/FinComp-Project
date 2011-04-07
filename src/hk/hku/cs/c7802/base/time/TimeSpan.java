@@ -1,6 +1,6 @@
 package hk.hku.cs.c7802.base.time;
 
-public class TimeSpan {
+public class TimeSpan{
 
 	public TimeSpan() {
 		this(0, 0, 0);
@@ -8,7 +8,8 @@ public class TimeSpan {
 	
 	public TimeSpan(int year, int month, long day) {
 		this.year = year;
-		this.month = month;
+		this.year += month / 12;
+		this.month = month % 12;
 		this.day = day;
 	}
 	
@@ -24,15 +25,37 @@ public class TimeSpan {
 		return year;
 	}
 	
+	public TimeSpan plus(TimeSpan other) {
+		return new TimeSpan(this.year + other.year, this.month + other.month, this.day + other.day);
+	}
+	
 	@Override
 	public String toString() {
 		String ret = "";
-		ret += year != 0 ? year + "yr" : "";
+		ret += year != 0 ? year + "y" : "";
 		ret += month != 0 ? month + "m" : "";
 		ret += day != 0 ? day + "d" : "";
 		return ret;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimeSpan other = (TimeSpan) obj;
+		if (day != other.day)
+			return false;
+		if (month != other.month)
+			return false;
+		if (year != other.year)
+			return false;
+		return true;
+	}
+
 	public static final TimeSpan NEXTDAY = new TimeSpan(0, 0, 1);
 	public static final TimeSpan LASTDAY = new TimeSpan(0, 0, -1);
 	

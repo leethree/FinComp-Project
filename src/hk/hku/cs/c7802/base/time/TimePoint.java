@@ -49,10 +49,14 @@ public class TimePoint implements Comparable<TimePoint>{
 	
 	@Override
 	public String toString() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+	}
+
+	public String toCompleteString() {
 		return FORMATTER.format(time.getTime()) + " "
 				+ time.getTimeZone().getID();
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

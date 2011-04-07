@@ -18,7 +18,7 @@ public abstract class InterestRateInstrument extends Instrument {
 	
 	@Override
 	public String toString() {
-		return super.toString() + " [" + rateType + ": " + rate + "]";
+		return super.toString() + " @" + rateType + ":" + rate;
 	}
 	
 	protected double rate;

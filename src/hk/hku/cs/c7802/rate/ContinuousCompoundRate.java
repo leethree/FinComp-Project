@@ -11,7 +11,7 @@ public class ContinuousCompoundRate extends InterestType{
 	
 	// TODO test me
 	@Override
-	protected double payOutAfter(double rate, TimeDiff diff) {
+	public double payOutAfter(double rate, TimeDiff diff) {
 		return Math.pow(1 + rate, base.factor(diff)) - 1;
 	}
 
@@ -19,6 +19,11 @@ public class ContinuousCompoundRate extends InterestType{
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
 		return Math.pow(df, - 1 / base.factor(diff));
+	}
+
+	@Override
+	public String toString() {
+		return "continuous-compounding";
 	}
 
 }

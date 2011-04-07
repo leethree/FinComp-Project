@@ -14,7 +14,7 @@ import hk.hku.cs.c7802.curve.CurveEngine;
 import hk.hku.cs.c7802.curve.PerfectCurve;
 import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.LinearInterpolator;
-import hk.hku.cs.c7802.inst.CashInstrument;
+import hk.hku.cs.c7802.curve.util.OutOfRangeException;
 import hk.hku.cs.c7802.inst.Instrument;
 import hk.hku.cs.c7802.market.MarketData;
 import hk.hku.cs.c7802.market.MarketDataPool;
@@ -187,7 +187,13 @@ public class Main {
 		// TODO Fill this
 		TimePoint time = TimePoint.now();
 		while(true) {
-			double df = curve.disFactorAt(time);
+			double df = 0;
+			try {
+				df = curve.disFactorAt(time);
+			} catch (OutOfRangeException e) {
+				// FIXME Please handle this exception
+				e.printStackTrace();
+			}
 			System.out.println(time + "    " + df);
 			time.plus(TimeSpan.NEXTDAY);
 		}		

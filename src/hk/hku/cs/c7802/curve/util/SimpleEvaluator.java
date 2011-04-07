@@ -37,8 +37,15 @@ public class SimpleEvaluator implements InstrumentEvaluator {
 
 		@Override
 		public void visit(CashFlow cf, TimePoint tp) {
-			// Present Value += Future Value * Discount Factor
-			presentValue = presentValue.plus(cf.multiply(curve.disFactorAt(tp)));
+			if (presentValue == null)
+				return; // do nothing if the evaluation already fails
+			try {
+				// Present Value += Future Value * Discount Factor
+				presentValue = presentValue.plus(cf.multiply(curve.disFactorAt(tp)));
+			} catch (OutOfRangeException e) {
+				// evaluation fails
+				presentValue = null;
+			}
 		}
 
 		@Override

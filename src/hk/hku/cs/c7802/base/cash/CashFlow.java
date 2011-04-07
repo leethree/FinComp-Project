@@ -27,12 +27,24 @@ public abstract class CashFlow {
 	 */
 	public abstract CashFlow plus(CashFlow c);
 	
+	public final CashFlow minus(CashFlow c) {
+		return plus(c.invert());
+	}
+	
 	/**
 	 * Scale the cash flow according to a factor
 	 * @param s
 	 * @return
 	 */
 	public abstract CashFlow multiply(double s);
+	
+	/**
+	 * Change the money from income to outcome or vice-versa
+	 * @return
+	 */
+	public final CashFlow invert() {
+		return multiply(- 1.0);
+	}
 	
 	public final boolean isEmpty() {
 		return this == createEmpty();
