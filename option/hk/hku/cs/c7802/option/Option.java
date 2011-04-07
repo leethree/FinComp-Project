@@ -44,7 +44,6 @@ public abstract class Option extends Instrument{
 	}
 	
 	public static interface StockPricer {
-		
 		public double priceAt(TimePoint time);
 		
 		public double maxBefore(TimePoint time);
