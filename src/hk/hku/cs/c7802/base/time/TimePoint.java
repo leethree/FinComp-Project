@@ -95,16 +95,16 @@ public class TimePoint implements Comparable<TimePoint>{
 	 * @return
 	 * @throws BaseException 
 	 */
-	public static TimePoint parse(String str) throws BaseException {
+	public static TimePoint parse(String str) throws TimePointFormatException {
 		String[] tokens = str.split(" ");
 		if (tokens.length != 3)
-			throw new BaseException("Incorrect time point format: " + str);
+			throw new TimePointFormatException("Incorrect time point format: " + str);
 		TimeZone tz = TimeZone.getTimeZone(tokens[2]);
 		Date time;
 		try {
 			time = FORMATTER.parse(str);
 		} catch (ParseException e) {
-			throw new BaseException("Incorrect time point format: " + str, e);
+			throw new TimePointFormatException("Incorrect time point format: " + str, e);
 		}
 		return new TimePoint(tz, time);
 	}

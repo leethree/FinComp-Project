@@ -6,6 +6,8 @@ public class LinearInterpolator implements Interpolator<Long> {
 
 	@Override
 	public double interpolate(Long point, SortedMap<Long, Double> datapoints) throws OutOfRangeException{
+		if(datapoints.isEmpty())
+			throw new OutOfRangeException(0, 0);
 		if (datapoints.firstKey() >= point || datapoints.lastKey() < point)
 			throw new OutOfRangeException(datapoints.firstKey(), datapoints.lastKey());
 		long key1 = datapoints.tailMap(point).firstKey();
