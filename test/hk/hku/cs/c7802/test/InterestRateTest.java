@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimeDiff;
 import hk.hku.cs.c7802.rate.CompoundRate;
+import hk.hku.cs.c7802.rate.ContinuousRate;
 import hk.hku.cs.c7802.rate.InterestType;
 import hk.hku.cs.c7802.rate.SimpleRate;
 
@@ -18,6 +19,7 @@ public class InterestRateTest {
 	public void setUp() throws Exception {
 		simpleRate = new SimpleRate(DayBase.ACT365);
 		comRate = new CompoundRate(DayBase.ACT365, 4);
+		contRate = new ContinuousRate(DayBase.ACT365);
 	}
 
 	@After
@@ -40,7 +42,15 @@ public class InterestRateTest {
 		assertEquals(0.05, rate, 0.000001);
 	}
 	
+	@Test
+	public void testContinuousRate() {
+		double df = contRate.disFactorAfter(0.05, new TimeDiff(50));
+		assertEquals(0.993174, df, 0.000001);
+		double rate = contRate.fromDisFactor(df, new TimeDiff(50));
+		assertEquals(0.05, rate, 0.000001);
+	}
+	
 	private InterestType simpleRate;
 	private InterestType comRate;
-	
+	private InterestType contRate;
 }
