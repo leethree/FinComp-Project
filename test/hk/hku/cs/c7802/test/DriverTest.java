@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import hk.hku.cs.c7802.driver.CSVParser;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;

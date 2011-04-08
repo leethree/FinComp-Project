@@ -13,9 +13,9 @@ public class PerfectCurve implements YieldCurve{
 	
 	public PerfectCurve(TimePoint timepoint, double rate, DayBase dayBase) {
 		this.timepoint = timepoint;
-		rateType = new ContinuousRate(dayBase);
 		this.rate = rate;
 		this.dayBase = dayBase;
+		rateType = new ContinuousRate(this.dayBase);
 	}
 	
 	public PerfectCurve(TimePoint timepoint, double rate) {

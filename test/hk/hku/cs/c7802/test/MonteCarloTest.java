@@ -7,7 +7,6 @@ import org.junit.Test;
 import hk.hku.cs.c7802.montecarlo.Antithetic;
 import hk.hku.cs.c7802.montecarlo.BasicMonteCarlo;
 import hk.hku.cs.c7802.montecarlo.CachedRandomGenerator;
-import hk.hku.cs.c7802.montecarlo.MonteCarloCallPutPredictor;
 import hk.hku.cs.c7802.montecarlo.MonteCarloOption;
 import hk.hku.cs.c7802.montecarlo.NormalGenerator;
 import hk.hku.cs.c7802.montecarlo.RandomGenerator;
