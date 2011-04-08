@@ -9,13 +9,11 @@ public class SimpleRate extends InterestType {
 		super(base);
 	}
 
-	// TODO test me
 	@Override
 	public double payOutAfter(double rate, TimeDiff diff) {
 		return rate * dcf(diff);
 	}
 
-	// TODO test me
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
 		return (1 / df - 1) / dcf(diff);

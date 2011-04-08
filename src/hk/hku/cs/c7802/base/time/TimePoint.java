@@ -120,7 +120,7 @@ public class TimePoint implements Comparable<TimePoint>{
 	
 	private Calendar time;
 
-	private static final TimeZone DEFAULT_TIMEZONE = TimeZone.getDefault();
+	private static final TimeZone DEFAULT_TIMEZONE = TimeZone.getTimeZone("GMT+8");
 	private static final DateFormat FORMATTER = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 }

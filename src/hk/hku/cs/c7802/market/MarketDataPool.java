@@ -27,7 +27,7 @@ public class MarketDataPool {
 			// if the market data is collected before ref time
 			if (ref.minus(tp).getDay() >= 0) {
 				// and is still valid
-				if (entry.getInst().getValidthru().compareTo(ref) > 0)
+				if (entry.getInst().getValidthru() == null || entry.getInst().getValidthru().compareTo(ref) > 0)
 					ret.add(entry);
 			} else
 				continue;

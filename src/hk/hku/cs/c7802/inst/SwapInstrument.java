@@ -23,6 +23,10 @@ public class SwapInstrument extends InterestRateInstrument {
 		return ev.getValue();
 	}
 	
+	public TimeSpan getMaturity() {
+		return maturity;
+	}
+	
 	@Override
 	public String toString() {
 		return super.toString() + " P" + period + " M" + maturity + ".";

@@ -1,5 +1,6 @@
 package hk.hku.cs.c7802.curve;
 
+import java.io.PrintStream;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -27,6 +28,10 @@ public class SimpleCurve implements YieldCurve{
 		dfpoints.put(key(diff), disFactor);
 		ratepoints.put(key(diff), config.getCurveRateType().fromDisFactor(disFactor, diff));
 	}
+	
+	public void addDataPoint(TimePoint time, double disFactor) {
+		addDataPoint(time.minus(timestamp), disFactor);
+	}
 
 	@Override
 	public double disFactorAt(TimePoint time) throws OutOfRangeException {
@@ -45,6 +50,14 @@ public class SimpleCurve implements YieldCurve{
 			dfpoints.put(key(diff), ret);
 		}
 		return ret;
+	}
+	
+	// For debug only
+	public void dump(PrintStream out) {
+		out.println("Curve dump: " + timestamp);
+		for (Long key : ratepoints.keySet()) {
+			out.println(key + "\t:\t" + dfpoints.get(key) + "\t:\t" + ratepoints.get(key));
+		}
 	}
 	
 	private long key(TimeDiff diff) {

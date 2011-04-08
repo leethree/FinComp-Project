@@ -4,7 +4,7 @@ import hk.hku.cs.c7802.base.cash.CashFlow;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.inst.Instrument;
 
-public class MarketData {
+public class MarketData{
 
 	public MarketData(Instrument inst, CashFlow price) {
 		this.inst = inst;
@@ -23,6 +23,6 @@ public class MarketData {
 		return inst.getTimestamp();
 	}
 	
-	private Instrument inst;
-	private CashFlow price;
+	protected Instrument inst;
+	protected CashFlow price;
 }

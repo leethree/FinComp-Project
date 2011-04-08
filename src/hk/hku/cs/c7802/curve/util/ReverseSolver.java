@@ -73,7 +73,7 @@ public class ReverseSolver implements InstrumentEvaluator {
 				// Present Value += Future Value * Discount Factor
 				presentValue = presentValue.plus(cf.multiply(curve.disFactorAt(tp)));
 			} catch (OutOfRangeException e) {
-				if (pendingFlow != null) {
+				if (pendingFlow == null) {
 					// record the current point
 					pendingFlow = cf;
 					pendingTime = tp;

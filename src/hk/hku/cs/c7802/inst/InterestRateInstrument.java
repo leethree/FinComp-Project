@@ -16,6 +16,14 @@ public abstract class InterestRateInstrument extends Instrument {
 	
 	public abstract CashFlow valueWith(InstrumentEvaluator ev);
 	
+	public InterestType getRateType() {
+		return rateType;
+	}
+	
+	public double getRate() {
+		return rate;
+	}
+	
 	@Override
 	public String toString() {
 		return super.toString() + " @" + rateType + ":" + rate;
