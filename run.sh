@@ -25,7 +25,12 @@ testBTGetCall() {
     fc -bt -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
 }
 
-testBTGetOptionA() {
+testBTGetOptionAEuro() {
+    # European
+    fc -bt -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
+}
+
+testBTGetOptionAAmerican() {
     # American
     fc -bt -a -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
 }
@@ -65,8 +70,11 @@ testBSGetCall
 # BT
 echo -n 'testBTGetCall = '
 testBTGetCall
-echo -n 'testBTGetOptionA = '
-testBTGetOptionA
+echo -n 'testBTGetOptionAEuro = '
+testBTGetOptionAEuro
+echo -n 'testBTGetOptionAAmerican = '
+testBTGetOptionAAmerican
+
 # MC
 echo -n 'testMCGetCall = '
 testMCGetCall

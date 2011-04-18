@@ -7,7 +7,7 @@ import hk.hku.cs.c7802.base.cash.CashFlow;
  * It could be either European or American.
  *
  */
-public abstract class VanillaOption extends Option {
+public abstract class VanillaOption extends Option implements IEuropeanOption {
 
 	protected VanillaOption(VanillaOptionBuilder builder) {
 		super(builder);
@@ -23,6 +23,7 @@ public abstract class VanillaOption extends Option {
 		return payout(pricer.priceAt(expiry));
 	}
 
+	@Override
 	public boolean isEuropean() {
 		return style == Style.EUROPEAN;
 	}

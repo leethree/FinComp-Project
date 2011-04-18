@@ -57,7 +57,7 @@ public class BinomialTreeTest {
 
 		BasicBinomialTree mc = new BasicBinomialTree(10);
 		
-		double v=mc.value(mockOption, S0, K, T, r, sigma, style);
+		double v=mc.value(mockOption, S0, T, r, sigma, style);
 		
 		assertEquals(call, v, 0.072);
 	}

@@ -3,7 +3,7 @@ package hk.hku.cs.c7802.option;
 import hk.hku.cs.c7802.base.cash.CashFlow;
 import hk.hku.cs.c7802.option.OptionAlpha.OptionAlphaBuilder;
 
-public class OptionBeta extends Option {
+public class OptionBeta extends Option implements IEuropeanOption{
 
 	protected OptionBeta(OptionBetaBuilder builder) {
 		super(builder);
@@ -30,7 +30,12 @@ public class OptionBeta extends Option {
 		}
 	}
 	
-	public static OptionAlphaBuilder create() {
-		return new OptionAlphaBuilder();
+	public static OptionBetaBuilder create() {
+		return new OptionBetaBuilder();
+	}
+
+	@Override
+	public boolean isEuropean() {
+		return true;
 	}
 }

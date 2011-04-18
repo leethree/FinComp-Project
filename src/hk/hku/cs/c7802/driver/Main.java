@@ -24,6 +24,7 @@ import hk.hku.cs.c7802.model.MonteCarloModel;
 import hk.hku.cs.c7802.option.CallPutOption;
 import hk.hku.cs.c7802.option.Option;
 import hk.hku.cs.c7802.option.Option.OptionBuilder;
+import hk.hku.cs.c7802.option.OptionBeta.OptionBetaBuilder;
 import hk.hku.cs.c7802.option.OptionAlpha;
 import hk.hku.cs.c7802.option.OptionBeta;
 import hk.hku.cs.c7802.option.OptionEvaluator;
@@ -203,7 +204,12 @@ public class Main {
 			else {
 				System.err.println("Warning: Unknown type of option");
 			}
-		}		
+		}
+		else if(OptionBetaBuilder.class.isInstance(optionBuilder)){
+			if(!optionType.equals("European")) {
+				System.err.println("Warning: OptionBeta should be European");
+			}
+		}
 		
 		Stock stock = Stock.getDefault();
 		StockMaketData smd = new StockMaketData();

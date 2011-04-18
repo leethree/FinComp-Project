@@ -8,13 +8,13 @@ public class BasicBinomialTree {
 		this.stepnum=stepnum;
 	}	
 	
-	public double value( BinomialTreeOption option, double S0, double K, double T, double rateOfYear, double sigma,boolean style) {
+	public double value( BinomialTreeOption option, double S0, double T, double rateOfYear, double sigma,boolean isEuropean) {
 		double deltat=T/stepnum;	
 		double u=Math.pow(Math.E, sigma*Math.sqrt(deltat));
 		double d=Math.pow(Math.E, -sigma*Math.sqrt(deltat));
 		double p=(Math.pow(Math.E,rateOfYear*deltat)-d)/(u-d);			
 		
-		if(style){
+		if(isEuropean){
 			
 			comb=new Combination();
 

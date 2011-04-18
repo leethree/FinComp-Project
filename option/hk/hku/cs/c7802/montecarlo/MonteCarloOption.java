@@ -1,6 +1,7 @@
 package hk.hku.cs.c7802.montecarlo;
 
 import hk.hku.cs.c7802.base.time.TimePoint;
+import hk.hku.cs.c7802.option.Option;
 import hk.hku.cs.c7802.option.Option.StockPricer;
 import hk.hku.cs.c7802.option.VanillaOption;
 
@@ -10,16 +11,16 @@ public interface MonteCarloOption {
 	// the return of payout is also future value of the execution day.
 	public double payout(double Smax, double Smin, double S);
 	
-	public static class Vanilla implements MonteCarloOption{
-		VanillaOption to;
+	public static class Adaptor implements MonteCarloOption{
+		Option o;
 		
-		public Vanilla(VanillaOption traditionOption) {
-			this.to = traditionOption;
+		public Adaptor(Option traditionOption) {
+			this.o = traditionOption;
 		}
 
 		@Override
 		public double payout(final double Smax, final double Smin, final double S) {
-			return to.payout(new StockPricer() {
+			return o.payout(new StockPricer() {
 
 				@Override
 				public double priceAt(TimePoint time) {

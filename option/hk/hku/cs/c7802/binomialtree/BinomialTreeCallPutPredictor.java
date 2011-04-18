@@ -22,12 +22,12 @@ public class BinomialTreeCallPutPredictor {
 	
 	public double call() {
 		BinomialTreeOption option = new BinomialTreeOption.Call(K);
-		return bbt.value(option, S0, K, T, r, sigma,style);
+		return bbt.value(option, S0, T, r, sigma,style);
 	}
 	
 	public double put() {
 		BinomialTreeOption option = new BinomialTreeOption.Put(K);
-		return bbt.value( option, S0, K, T, r, sigma,style);
+		return bbt.value( option, S0, T, r, sigma,style);
 	}
 }
  

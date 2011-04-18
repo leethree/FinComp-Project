@@ -12,19 +12,19 @@ import hk.hku.cs.c7802.montecarlo.RandomGenerator;
 import hk.hku.cs.c7802.option.Option;
 import hk.hku.cs.c7802.option.OptionEvaluator;
 import hk.hku.cs.c7802.option.VanillaOption;
+import hk.hku.cs.c7802.option.IEuropeanOption;
 
 public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 
 	@Override
 	public CashFlow evaluate(Option option) {
-		if (option instanceof VanillaOption)
-			return evaluate((VanillaOption) option);
-		else
+		if(option instanceof IEuropeanOption && !((IEuropeanOption)option).isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Monte Carlo Model.");
+		return evaluateOption(option);
 	}
 	
-	public CashFlow evaluate(VanillaOption option) {
-		if (!option.isEuropean())
+	private CashFlow evaluateOption(Option option) {
+		if ((option instanceof VanillaOption) && !((VanillaOption)option).isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Monte Carlo Model.");
 		
 		TimePoint ref = TimePoint.now();
@@ -38,7 +38,7 @@ public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 		RandomGenerator rg = new Antithetic(crg);
 		rg.setSeed(2);
 		
-		double v = mc.value(rg, new MonteCarloOption.Vanilla(option), S0, T, r, sigma);
+		double v = mc.value(rg, new MonteCarloOption.Adaptor(option), S0, T, r, sigma);
 		v = v * this.getDiscountFactor(option.getExpiry());
 		double error0 = mc.error(0);
 		double error = mc.error(5);
