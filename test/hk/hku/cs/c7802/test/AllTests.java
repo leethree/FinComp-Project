@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
 	MonteCarloTest.class,
 	BlackScholesTest.class,
 	NewtonsMethodTest.class,
+	BinomialTreeTest.class,
 	// driver
 	DriverTest.class
 })
