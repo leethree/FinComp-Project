@@ -8,7 +8,7 @@ public class BasicMonteCarlo {
 		this.N = N;
 	}
 	
-	private double[] core(RandomGenerator ng, double T, double rateOfYear, double sigma, int dataIndex) {
+	private double[] core(RandomGenerator ng, double T, double rateOfYear, double sigma) {
 		double deltaT = T / N;
 		// rate * DeltaT
 		double rateDeltaT = rateOfYear * deltaT;
@@ -39,7 +39,7 @@ public class BasicMonteCarlo {
 		double sumSq = 0;
 		
 		for(int i = 0; i < M; i++) {
-			double change[] = core(ng, T, rateOfYear, sigma, i);
+			double change[] = core(ng, T, rateOfYear, sigma);
 			
 			double Smax = change[0];
 			double Smin = change[1];

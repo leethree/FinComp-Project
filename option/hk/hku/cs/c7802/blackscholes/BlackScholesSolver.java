@@ -12,11 +12,11 @@ public class BlackScholesSolver {
 	
 	public double volatilityFromCall(double c) {
 		NewtonsMethod nm = new NewtonsMethod(bsf.new Call(c), bsf.new DerivedCall());
-		return nm.solution(0.0001);
+		return nm.solution(0.000001);
 	}
 	
 	public double volatilityFromPut(double p) {
 		NewtonsMethod nm = new NewtonsMethod(bsf.new Put(p), bsf.new DerivedPut());
-		return nm.solution(0.0001);
+		return nm.solution(0.000001);
 	}
 }

@@ -59,7 +59,7 @@ public class DriverTest {
 			String x = stdout.readLine();
 			if(x == null)
 				break;
-			System.out.println(x);
+			// System.out.println(x);
 		}
 		
 		int exitStatus = p.waitFor();
@@ -80,7 +80,7 @@ public class DriverTest {
 			String x = stdout.readLine();
 			if(x == null)
 				break;
-			System.out.println(x);
+			// System.out.println(x);
 		}
 		
 		int exitStatus = p.waitFor();

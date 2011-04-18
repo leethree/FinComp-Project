@@ -51,11 +51,14 @@ if [ $# -gt 0 ]; then
     fc "$@"
 else
 
-MARKET_RATE=$(market_rate 2013-01-22)
-if [ "$MARKET_RATE" = "" ]; then
-MARKET_RATE=0.04763372229424285 
-fi
+#MARKET_RATE=$(market_rate 2013-01-22)
+#if [ "$MARKET_RATE" = "" ]; then
+MARKET_RATE=0.047634
+#fi
 SIGMA=0.6377602538096591 
+
+echo MARKET_RATE=$MARKET_RATE
+echo SIGMA=0.6377602538096591
 
 # Yield Curve
 echo -n 'testYieldCurve = '

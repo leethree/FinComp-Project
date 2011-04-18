@@ -33,10 +33,11 @@ public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 		double r = this.getContinuousRate(option.getExpiry());
 		double sigma = this.getVolatility(option);
 		
-		BasicMonteCarlo mc = new BasicMonteCarlo(10000, 1000);
-		CachedRandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
+		BasicMonteCarlo mc = new BasicMonteCarlo(50000, 1000);
+		// RandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
+		RandomGenerator crg = new NormalGenerator.BoxMuller2();
 		RandomGenerator rg = new Antithetic(crg);
-		rg.setSeed(2);
+		// rg.setSeed(2);
 		
 		double v = mc.value(rg, new MonteCarloOption.Adaptor(option), S0, T, r, sigma);
 		v = v * this.getDiscountFactor(option.getExpiry());

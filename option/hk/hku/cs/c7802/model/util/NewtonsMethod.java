@@ -3,6 +3,7 @@ package hk.hku.cs.c7802.model.util;
 public class NewtonsMethod {
 	Function f;
 	Function df; 	// the derivative of the f
+	int lastCount = 0;
 	
 	public NewtonsMethod(Function f, Function df) {
 		this.f = f;
@@ -22,10 +23,16 @@ public class NewtonsMethod {
 			double dy = df.gety(x0);
 			x = x0 -  y / dy;
 			if(Math.abs(x - x0) < error || count > MAX) {
-				// FIXME what should I do when count > MAX?
+				// FIXME what should I do when count > MAX?				
+				this.lastCount = count;
 				return x;
 			}
 			x0 = x;
 		}
+	}
+	
+	// This is for performance observation
+	public int lastIterationCount() {		
+		return lastCount;
 	}
 }

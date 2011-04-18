@@ -25,8 +25,9 @@ public class NewtonsMethodTest {
 		};
 		
 		NewtonsMethod nm = new NewtonsMethod(f, df);
-		double error = 0.00001;
+		double error = 0.000001;
 		double x0 = nm.solution(error);
+		System.err.println(String.format("INFO: Newtons method iterated for %d times", nm.lastIterationCount()));
 		if(x0 > 6)
 			assertEquals(8, x0, error);
 		else
