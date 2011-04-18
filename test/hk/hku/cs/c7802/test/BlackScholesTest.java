@@ -27,7 +27,7 @@ public class BlackScholesTest {
 		double v1 = bs.call();		
 
 		rg.setSeed(2);
-		double v2 = mc.value(rg, option, S0, K, T, r, sigma);
+		double v2 = mc.value(rg, option, S0, T, r, sigma);
 		
 		System.err.println("1E" + (int) Math.log(Math.abs(v1 * Math.exp(r * T) - v2)));
 		if(expected > 0) {

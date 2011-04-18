@@ -36,4 +36,10 @@ public class MarketDataPool {
 	}
 	
 	private Collection<MarketData> pool; 
+	
+	public void debug() {
+		for(MarketData entry: pool) {
+			System.err.println(entry);
+		}
+	}
 }

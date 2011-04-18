@@ -16,7 +16,10 @@ public class ContinuousRate extends InterestType {
 
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
-		return Math.log(1 / df) / dcf(diff);
+		double t = dcf(diff);
+		if(t == 0)
+			return 0;
+		return Math.log(1 / df) / t; 
 	}
 
 	@Override

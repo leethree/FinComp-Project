@@ -21,6 +21,10 @@ public abstract class Option extends Instrument{
 		return stock;
 	}
 	
+	public TimePoint getExpiry() {
+		return expiry;
+	}
+	
 	protected Stock stock;
 	protected TimePoint expiry;
 	

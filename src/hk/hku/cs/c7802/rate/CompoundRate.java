@@ -19,7 +19,10 @@ public class CompoundRate extends InterestType {
 
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
-		double acc = Math.pow(1 / df, 1 / (frequency * dcf(diff)));
+		double t = dcf(diff);
+		if(t == 0)
+			return 0;
+		double acc = Math.pow(1 / df, 1 / (frequency * t));
 		return frequency * (acc - 1);
 	}
 

@@ -16,7 +16,10 @@ public class SimpleRate extends InterestType {
 
 	@Override
 	public double fromDisFactor(double df, TimeDiff diff) {
-		return (1 / df - 1) / dcf(diff);
+		double t = dcf(diff);
+		if(t == 0)
+			return 0;
+		return (1 / df - 1) / t;
 	}
 
 	@Override

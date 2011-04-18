@@ -31,12 +31,12 @@ public class MonteCarloCallPutPredictor {
 	public double call() {
 		rg.setSeed(seed);
 		MonteCarloOption option = new MonteCarloOption.Call(K);
-		return bmc.value(rg, option, S0, K, T, r, sigma);
+		return bmc.value(rg, option, S0, T, r, sigma);
 	}
 	
 	public double put() {
 		rg.setSeed(seed);
 		MonteCarloOption option = new MonteCarloOption.Put(K);
-		return bmc.value(rg, option, S0, K, T, r, sigma);
+		return bmc.value(rg, option, S0, T, r, sigma);
 	}
 }

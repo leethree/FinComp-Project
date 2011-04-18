@@ -47,6 +47,9 @@ public abstract class InterestRateInstrument extends Instrument {
 			return this;
 		}
 		
+		@Override
+		public abstract InterestRateInstrument build();
+		
 		private double rate = 0;
 		private InterestType rateType;
 	}

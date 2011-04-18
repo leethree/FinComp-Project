@@ -74,7 +74,7 @@ public class SwapInstrument extends InterestRateInstrument {
 		}
 		
 		@Override
-		public Instrument build() {
+		public SwapInstrument build() {
 			return new SwapInstrument(this);
 		}
 		

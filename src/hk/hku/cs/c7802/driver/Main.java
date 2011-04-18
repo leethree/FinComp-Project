@@ -15,7 +15,6 @@ import hk.hku.cs.c7802.curve.PerfectCurve;
 import hk.hku.cs.c7802.curve.YieldCurve;
 import hk.hku.cs.c7802.curve.util.LinearInterpolator;
 import hk.hku.cs.c7802.curve.util.OutOfRangeException;
-import hk.hku.cs.c7802.inst.Instrument;
 import hk.hku.cs.c7802.market.MarketData;
 import hk.hku.cs.c7802.market.MarketDataPool;
 import hk.hku.cs.c7802.model.BaseModel;
@@ -36,12 +35,14 @@ import hk.hku.cs.c7802.stock.StockMaketData;
 
 public class Main {
 	
+	public static final String CLI = String.format("java %s", Main.class.getName());
+	public static TimePoint ref = TimePoint.now();
+
 	public static void usage() {
 		String cli = String.format("java %s", Main.class.getName());
+		System.out.println("Usage:");
+		YieldCurveDriver.usage();
 		System.out.println(
-			"Usage: \n" +
-			"# Generate Swap Curve: \n" +
-			cli + " -y [-s curveSpec.csv] [-i curveDataInput]\n" +
 			"# Use Black Scholes or Binomial Tree or Monte-Carlo \n" +
 			cli + " -bs|-bt|-mc  \n" +
 			"\t -a|-e American/Europeen(default) \n" +
@@ -50,7 +51,8 @@ public class Main {
 			"\t -r Risk-Free-Continuous-Compounding-Rate \n" +
 			"\t -s \\sigma # Once given, we will use it to value the option\n" +
 			"\t -v Value-of-the-option        # once given we will use it to value the sigma\n" +
-			"\t option-class-name arg1 arg2 ...\n" +
+			"\t option-class-name arg1 arg2 ...");
+		System.out.println(
 			" # List all available options\n" +
 			cli + " -l" +
 			" # Show available data format\n" +
@@ -102,140 +104,13 @@ public class Main {
 		return null;
 	}
 	
-	public static String[] getTypeRecord(List<String[]> curveSpec, String ID) {
-		for(String[] r: curveSpec) {
-			if(r.length > 2 && r[2] != null && r[2].equals(ID)) {
-				return r;
-			}
-		}
-		return null;
-	}
-	
-	public static void yieldCurve(String curveSpecFilename, String curveDataInputFilename) {
-		System.err.println("Error: not yet implemented");
-		
-		List<String[]> curveData;
-		List<String[]> curveSpec;
+	private static TimePoint parseDate(String arg) throws TimePointFormatException {
 		try {
-			String[] curveSpecHead = new String[3];
-			String[] curveDataHead = new String[2];
-			curveSpec = new CSVParser(curveSpecFilename, curveSpecHead).toList();
-			curveData = new CSVParser(curveDataInputFilename, curveDataHead).toList();
-			if(!(curveSpecHead[0].equals("InstrumentType") &&
-				curveSpecHead[1].equals("subType") &&
-				curveSpecHead[2].equals("ID") &&
-				curveDataHead[0].equals("ID") &&
-				curveDataHead[1].equals("Rate"))) {
-				System.err.println("Warning: the scheme of the curveSpec/curveData csv is not standard");
-			}
-			
-			
-		} catch (FileNotFoundException e) {	
-			e.printStackTrace();
-			return;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
+			return TimePoint.parse(arg + " 17:18:42 GMT+08:00");
+		} catch (TimePointFormatException e) {
+			return TimePoint.parse(arg);
 		}
-		
-		CurveConfig config = new CurveConfig();
-		config.setCurveRateType(new CompoundRate(DayBase.ACT365, 4));
-		config.setInterpolator(new LinearInterpolator());
-		// s.addDataPoint(new TimeDiff(50), 0.92);
-		// s.addDataPoint(new TimeDiff(1), 0.999);
-		
-		MarketDataPool pool = new MarketDataPool();
-		for(String[] record: curveData) {
-			String id = record[0];	// ID
-			double rate = Double.parseDouble(record[1]);
-			String[] typeRecord = getTypeRecord(curveSpec, id);
-			if(typeRecord != null) {
-				System.out.println(String.format("%s %s %f\n", typeRecord[0], typeRecord[1], rate));
-				
-				// Put the record into the market data pool
-				String type = typeRecord[0];
-				String subType = typeRecord[1];
-				Instrument instrument = parseFixRateInstrument(type, subType, rate);
-				
-				CashFlow price;
-				if(type.equals("CASH") || type.equals("SWAP")) {
-					price = CashFlow.create(1.0);
-				}
-				else if(type.equals("FRA")){
-					price = CashFlow.create(0.0);
-				}
-				else {
-					System.err.println("Don't know how to create the price for " + type);
-					return;
-				}
-				
-				pool.addEntry(new MarketData(instrument, price));
-			}
-			else {
-				System.err.println("Error at record, invalid ID");
-			}			
-		}	
-		
-		YieldCurve curve = CurveEngine.getEngine().buildFrom(pool);
-		
-		drawCurve(curve);
-	}
 	
-	private static void drawCurve(YieldCurve curve) {
-		if(curve == null)
-			throw new NullPointerException();
-		// TODO Fill this
-		TimePoint time = TimePoint.now();
-		while(true) {
-			double df = 0;
-			try {
-				df = curve.disFactorAt(time);
-			} catch (OutOfRangeException e) {
-				// FIXME Please handle this exception
-				e.printStackTrace();
-			}
-			System.out.println(time + "    " + df);
-			time.plus(TimeSpan.NEXTDAY);
-		}		
-	}
-
-	private static Instrument parseFixRateInstrument(String type,
-			String subType, double rate) {
-		if(type.equals("CASH")) {
-			if(subType.equals("ON")) {
-				// FIXME: I feel depressed when using the classes !
-			}
-		}
-		// TODO To be implemented
-		return null;
-	}
-
-	private static void handleYieldCurve(String args[]) {
-		String action = args[0];
-		assert("-y".equals(action));
-		
-		String curveSpec = null;
-		String curveData = null;
-		for(int i = 1; i < args.length; i++) {
-			if(args[i].equals("-s")) {
-				curveSpec = args[i+1];
-				i++;
-			}
-			else if(args[i].equals("-i")) {
-				curveData = args[i+1];
-				i++;
-			}
-			else {
-				usage();
-				break;
-			}
-		}
-		if(curveSpec != null && curveData != null) {
-			yieldCurve(curveSpec, curveData);					
-		}
-		else {
-			usage();
-		}
 	}
 
 	private static void handleOptionEvaluation(String args[]) {
@@ -264,10 +139,14 @@ public class Main {
 		Double sigma = null;
 		Double optionValue = null;
 		OptionBuilder optionBuilder = null;
+		String name = "unnamed";
 		for(int i = 1; i < args.length; i++) {
 			try {
 				if(args[i].equals("-a")) {
 					optionType = "American";
+				}
+				else if(args[i].equals("-e")) {
+					optionType = "European";
 				}
 				else if(args[i].equals("-S")) {
 					i++;
@@ -275,7 +154,7 @@ public class Main {
 				}
 				else if(args[i].equals("-E")) {
 					i++;
-					expiryDate = TimePoint.parse(args[i]);
+					expiryDate = parseDate(args[i]);
 				}
 				else if(args[i].equals("-r")) {
 					i++;
@@ -290,6 +169,9 @@ public class Main {
 					optionValue = Double.parseDouble(args[i]);
 				}
 				else {
+					name = "";
+					for(int j = i; j < args.length; j++)
+						name = optionType + name + ":" + args[j];
 					optionBuilder = parseOption(args, i, optionType);
 					break;
 				}
@@ -316,7 +198,7 @@ public class Main {
 				optionBuilder = ((VanillaOptionBuilder)optionBuilder).american();
 			}
 			else if(optionType.equals("European")) {
-				optionBuilder = ((VanillaOptionBuilder)optionBuilder).american();
+				optionBuilder = ((VanillaOptionBuilder)optionBuilder).european();
 			}
 			else {
 				System.err.println("Warning: Unknown type of option");
@@ -332,6 +214,7 @@ public class Main {
 		baseModel.setStockData(smd);
 		
 		optionBuilder.expiringAt(expiryDate).dependingOn(stock);
+		optionBuilder.withName(name).withTimestamp(ref);
 		Option option = (Option) optionBuilder.build();
 		
 		if(sigma != null) {
@@ -345,7 +228,6 @@ public class Main {
 			sigma = ((ImpliedVolatilityEvaluator)baseModel).implyVolatility(option, CashFlow.create(optionValue));
 			System.out.println("sigma = " + sigma);
 		}
-		
 	}
 	
 	public static void main(String args[]) {
@@ -357,7 +239,7 @@ public class Main {
 				showDateFormat();
 			}
 			else if(args[0].equals("-y")) {
-				handleYieldCurve(args);
+				YieldCurveDriver.main(args);
 			}
 			else if(args[0].equals("-bs") || args[0].equals("-bt") 
 					|| args[0].equals("-mc") ) {

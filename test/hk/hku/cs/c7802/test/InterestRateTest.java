@@ -32,6 +32,9 @@ public class InterestRateTest {
 		assertEquals(0.993197, df, 0.000001);
 		double rate = simpleRate.fromDisFactor(df, new TimeDiff(50));
 		assertEquals(0.05, rate, 0.000001);
+		
+		rate = comRate.fromDisFactor(1.0, new TimeDiff(0));
+		assertEquals(0, rate, 0.0);
 	}
 	
 	@Test
@@ -40,6 +43,9 @@ public class InterestRateTest {
 		assertEquals(0.993216, df, 0.000001);
 		double rate = comRate.fromDisFactor(df, new TimeDiff(50));
 		assertEquals(0.05, rate, 0.000001);
+		
+		rate = comRate.fromDisFactor(1.0, new TimeDiff(0));
+		assertEquals(0, rate, 0.0);
 	}
 	
 	@Test
@@ -48,6 +54,9 @@ public class InterestRateTest {
 		assertEquals(0.993174, df, 0.000001);
 		double rate = contRate.fromDisFactor(df, new TimeDiff(50));
 		assertEquals(0.05, rate, 0.000001);
+		
+		rate = contRate.fromDisFactor(1.0, new TimeDiff(0));
+		assertEquals(0, rate, 0.0);
 	}
 	
 	private InterestType simpleRate;

@@ -8,8 +8,10 @@ public abstract class Instrument {
 		this.name = builder.name;
 		this.timestamp = builder.timestamp;
 		this.validthru = builder.validthru;
-		if ((name == null) || (timestamp == null))
-			throw new IllegalArgumentException("Missing metadata for Instrument.");
+		if (name == null)
+			throw new IllegalArgumentException("Missing metadata for Instrument. (name == null)");
+		if (timestamp == null)
+			throw new IllegalArgumentException("Missing metadata for Instrument. (timestamp == null)");
 	}
 	
 	public TimePoint getTimestamp() {

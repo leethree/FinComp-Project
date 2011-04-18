@@ -35,7 +35,7 @@ public class MonteCarloTest {
 		CachedRandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
 		RandomGenerator rg = new Antithetic(crg);
 		rg.setSeed(2);
-		double v = mc.value(rg, mockOption, S0, K, T, r, sigma);
+		double v = mc.value(rg, mockOption, S0, T, r, sigma);
 		double error0 = mc.error(0);
 		double error = mc.error(5);
 		assertEquals(0, error0, 0.05);		// 90%
@@ -77,7 +77,7 @@ public class MonteCarloTest {
 				BasicMonteCarlo mc = new BasicMonteCarlo(config[i][0], config[i][1]);				
 				rgs[k].setSeed(2);
 				long start = System.currentTimeMillis();
-				double v = mc.value(rgs[k], mockOption, S0, K, T, r, sigma);
+				double v = mc.value(rgs[k], mockOption, S0, T, r, sigma);
 				long end = System.currentTimeMillis();
 				
 				performance[k][i] = end - start;				
@@ -107,13 +107,13 @@ public class MonteCarloTest {
 		double r = 0.03;
 		double call = 30;
 		
-		double sigma = 0.622320802564423;
+		double sigma = 0.622320802564423;	// get from Black Scholes
 
 		BasicMonteCarlo mc = new BasicMonteCarlo(2000, 1000);
 		CachedRandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
 		RandomGenerator rg = new Antithetic(crg);
 		rg.setSeed(2);
-		double v = mc.value(rg, new MonteCarloOption.Call(K), S0, K, T, r, sigma);
+		double v = mc.value(rg, new MonteCarloOption.Call(K), S0, T, r, sigma);
 		double error0 = mc.error(0);
 		double error = mc.error(5);
 		

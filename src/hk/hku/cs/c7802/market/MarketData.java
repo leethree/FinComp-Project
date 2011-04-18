@@ -7,6 +7,8 @@ import hk.hku.cs.c7802.inst.Instrument;
 public class MarketData{
 
 	public MarketData(Instrument inst, CashFlow price) {
+		if(inst == null)
+			throw new NullPointerException("inst is null");
 		this.inst = inst;
 		this.price = price;
 	}
@@ -25,4 +27,8 @@ public class MarketData{
 	
 	protected Instrument inst;
 	protected CashFlow price;
+	
+	public String toString() {
+		return "(" + inst.toString() + ", " +price.toString() + ")";
+	}
 }

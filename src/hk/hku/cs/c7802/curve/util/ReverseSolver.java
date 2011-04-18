@@ -29,7 +29,7 @@ public class ReverseSolver implements InstrumentEvaluator {
 	 * @return true if solved successfully
 	 */
 	public boolean solve(CashFlow value) {
-		if (eva.presentValue == null || eva.failed)
+		if (eva.pendingFlow == null || eva.failed)
 			return false;
 		CashFlow pendingValue = value.minus(eva.presentValue);
 		if (pendingValue.getCurrency() != eva.pendingFlow.getCurrency())
@@ -86,6 +86,7 @@ public class ReverseSolver implements InstrumentEvaluator {
 
 		@Override
 		public void after() {
+			// TODO why empty?
 		}
 	}
 }
