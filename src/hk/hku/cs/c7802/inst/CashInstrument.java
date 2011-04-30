@@ -34,6 +34,11 @@ public class CashInstrument extends InterestRateInstrument {
 
 		// we'll get $1+interest on the pay-out day
 		TimePoint payday = DateRoller.MOD_NEXT_BUZ_DAY.roll(ref.plus(maturity));
+		
+		// workaround for O/N and T/N
+		if (maturity.equals(new TimeSpan(0, 0, 1)) || maturity.equals(new TimeSpan(0, 0, 2)))
+			payday = DateRoller.NEXT_BUZ_DAY.roll(ref.plus(maturity));
+		
 		stream.add(CashFlow.create(1 / rateType.disFactorAfter(rate, payday.minus(ref))), payday);
 	}
 	
