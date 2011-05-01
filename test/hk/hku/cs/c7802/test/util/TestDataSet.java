@@ -37,7 +37,7 @@ public class TestDataSet {
 		swap_1y = buildSwap("Swap-1Y", new TimeSpan(0, 3, 0), new TimeSpan(1, 0, 0), 4.40);
 		swap_2y = buildSwap("Swap-2Y", new TimeSpan(0, 3, 0), new TimeSpan(2, 0, 0), 4.65);
 		swap_3y = buildSwap("Swap-3Y", new TimeSpan(0, 3, 0), new TimeSpan(3, 0, 0), 4.90);
-		pool.debug();
+		// pool.debug();
 	}
 	
 	public MarketDataPool pool = new MarketDataPool();
