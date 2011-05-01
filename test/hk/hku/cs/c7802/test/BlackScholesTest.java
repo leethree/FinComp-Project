@@ -15,7 +15,7 @@ import hk.hku.cs.c7802.montecarlo.NormalGenerator;
 import hk.hku.cs.c7802.montecarlo.RandomGenerator;
 
 public class BlackScholesTest {
-	BasicMonteCarlo mc = new BasicMonteCarlo(1000, 1000);
+	BasicMonteCarlo mc = new BasicMonteCarlo(100000, 100);
 	RandomGenerator rg = new Antithetic(new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded()));
 	
 	public void testCall(double S0, double K, double T, double r, double sigma, 
@@ -69,13 +69,13 @@ public class BlackScholesTest {
 		K = 1.03;
 		
 		sigma = 0.1;
-		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.001);
+		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.04);
 
 		sigma = 0.2;
-		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.001);
+		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.09);
 
 		sigma = 0.3;
-		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.001);		
+		testCall(S0, K, T, r, sigma, -1, 0.0001, 0.15);		
 	}
 	
 	@Test

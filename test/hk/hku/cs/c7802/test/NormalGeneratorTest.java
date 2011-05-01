@@ -36,10 +36,10 @@ public class NormalGeneratorTest {
 	@Test
 	public void testSetSeed() {
 		for(RandomGenerator ng: ngs_ants) {
-			ng.setSeed(1024);
+			ng.setSeed(2);
 			double x = ng.next();
 			double y = ng.next();
-			ng.setSeed(1024);
+			ng.setSeed(2);
 			double xx = ng.next();
 			double yy = ng.next();
 			assertEquals(x, xx, 1e-8);
@@ -112,6 +112,9 @@ public class NormalGeneratorTest {
 			double E = sum / M;
 			V[k] = sumSq - E * E;
 		}
+		
+		System.err.println("V1 = " + V[1]);
+		System.err.println("V0 = " + V[0]);
 		assertTrue("Antithetic should achieve a smaller variance", V[1] < V[0]);
 	}
 	@Test
@@ -133,6 +136,48 @@ public class NormalGeneratorTest {
 		this.testNormalDistribution(ngs[2], 2, 10000, 0.02);
 		this.testNormalDistribution(ngs[2], 7, 10000, 0.02);
 		this.testNormalDistribution(ngs[2], 19, 10000, 0.02);
+	}
+	
+	private double squareSum(double x[], int n) {
+		double sum = 0;
+		for(int i = 0 ; i < n; i++) {
+			sum += x[i] * x[i];
+		}
+		return sum;
+	}
+	
+	@Test
+	public void testSimpleAntithetics() {
+		int N = 12;
+		double x[] = new double[N];
+		double y[] = new double[N / 2];
+		Antithetic ant = ants[2];
+		//ant.setSeed(2);
+		double sum1 = 0, sqsum1 = 0, sum2 = 0, sqsum2 = 0;
+		for(int i = 0; i < N; i++) {
+			x[i] = ant.next();
+			x[i] *= x[i];
+			sum1 += x[i];
+			sqsum1 += x[i] * x[i];
+			if(i < N / 2) {
+				sum2 += x[i];
+				sqsum2 += x[i] * x[i];
+			}
+		}
+		ant.nextPath();
+		for(int i = 0; i < N / 2; i++) {
+			y[i] = ant.next();
+			y[i] *= y[i];
+			sum2 += y[i];
+			sqsum2 += y[i] * y[i];
+		}		
+		double avg1 = sum1 / N;
+		double avg2 = sum2 / N;
+		double variance1 = (sqsum1/(N-1) - sum1 * sum1 /((double)N* (N-1)));
+		double variance2 = (sqsum2/(N-1) - sum2 * sum2 /((double)N* (N-1)));
+		System.err.println(String.format("Average: %f %f", avg1, avg2));
+		System.err.println(String.format("Variance: %f %f", variance1, variance2));
+		assertTrue(variance1 > 2 * variance2);
 	}
 	
 	@Test

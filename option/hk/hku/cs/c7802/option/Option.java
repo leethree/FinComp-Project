@@ -12,7 +12,7 @@ public abstract class Option extends Instrument{
 		this.stock = builder.stock;
 		this.expiry = builder.expiry;
 		if ((stock == null) || (expiry == null))
-			throw new IllegalArgumentException("Missing parameter(s) for Option.");
+			throw new IllegalArgumentException("Missing parameter(s) for Option: stock or expiry");
 	}
 
 	public abstract CashFlow payout(StockPricer pricer);

@@ -17,7 +17,7 @@ public class MonteCarloTest {
 	double T = 360 / 365.0;
 	double r = 0.04;
 	double sigma = 0.23;
-	double expected = S0 * Math.exp(r * T);
+	double expected = S0;
 	
 	// This is a mock option, it's payout the stock price it self!!
 	MonteCarloOption mockOption = new MonteCarloOption() {
@@ -38,7 +38,7 @@ public class MonteCarloTest {
 		double v = mc.value(rg, mockOption, S0, T, r, sigma);
 		double error0 = mc.error(0);
 		double error = mc.error(5);
-		assertEquals(0, error0, 0.05);		// 90%
+		assertEquals(0, error0, 0.09);		// 90%		
 		assertEquals(expected, v, error);	// 99.95%
 	}
 	
@@ -110,7 +110,7 @@ public class MonteCarloTest {
 		
 		double sigma = 0.622320802564423;	// get from Black Scholes
 
-		BasicMonteCarlo mc = new BasicMonteCarlo(2000, 1000);
+		BasicMonteCarlo mc = new BasicMonteCarlo(2000, 100);
 		CachedRandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
 		RandomGenerator rg = new Antithetic(crg);
 		rg.setSeed(2);

@@ -35,11 +35,13 @@ public class BasicMonteCarlo {
 	}
 	
 	/*
-	 * Note that this value is not discounted
+	 * Note that this value is discounted
 	 */
 	public double value(RandomGenerator ng, MonteCarloOption option, double S0, double T, double rateOfYear, double sigma) {
 		double sum = 0;
 		double sumSq = 0;
+		
+		double discount = 1 / Math.exp(rateOfYear * T);
 		
 		for(int i = 0; i < M; i++) {
 			double change[] = core(ng, T, rateOfYear, sigma);
@@ -48,7 +50,7 @@ public class BasicMonteCarlo {
 			double Smin = change[1];
 			double S = change[2];
 			
-			double payout = option.payout(Smax * S0, Smin * S0, S * S0);
+			double payout = option.payout(Smax * S0, Smin * S0, S * S0) * discount;
 			sum += payout;
 			sumSq += payout * payout;
 
