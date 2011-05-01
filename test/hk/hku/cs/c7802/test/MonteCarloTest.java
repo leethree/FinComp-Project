@@ -77,7 +77,8 @@ public class MonteCarloTest {
 				BasicMonteCarlo mc = new BasicMonteCarlo(config[i][0], config[i][1]);				
 				rgs[k].setSeed(2);
 				long start = System.currentTimeMillis();
-				double v = mc.value(rgs[k], mockOption, S0, T, r, sigma);
+				//double v = 
+					mc.value(rgs[k], mockOption, S0, T, r, sigma);
 				long end = System.currentTimeMillis();
 				
 				performance[k][i] = end - start;				

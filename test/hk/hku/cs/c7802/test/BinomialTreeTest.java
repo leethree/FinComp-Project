@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import hk.hku.cs.c7802.binomialtree.BasicBinomialTree;
 import hk.hku.cs.c7802.binomialtree.BinomialTreeOption;
-import hk.hku.cs.c7802.binomialtree.BinomialTreeCallPutPredictor;
-import hk.hku.cs.c7802.binomialtree.Combination;
 
 public class BinomialTreeTest {
 	double S0 = 89.31;
@@ -47,7 +45,7 @@ public class BinomialTreeTest {
 	@Test
 	public void testBinomialTreeSimulationOnBenchmark() {
 		double S0 = 89.31;
-		double K = 95;
+		// double K = 95;
 		double T = 1.96;
 		double r = 0.03;
 		double call = 30;

@@ -3,7 +3,6 @@ package hk.hku.cs.c7802.test;
 import static org.junit.Assert.*;
 import hk.hku.cs.c7802.driver.CSVParser;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -3,7 +3,6 @@ package hk.hku.cs.c7802.montecarlo;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.option.Option;
 import hk.hku.cs.c7802.option.Option.StockPricer;
-import hk.hku.cs.c7802.option.VanillaOption;
 
 public interface MonteCarloOption {
 	// MonteCarloOption can only be European,

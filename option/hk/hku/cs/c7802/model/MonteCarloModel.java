@@ -39,8 +39,8 @@ public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 		
 		double v = mc.value(rg, new MonteCarloOption.Adaptor(option), S0, T, r, sigma);
 		v = v * this.getDiscountFactor(option.getExpiry());
-		double error0 = mc.error(0);
-		double error = mc.error(5);
+		// double error0 = mc.error(0);
+		// double error = mc.error(5);
 		return CashFlow.create(v);
 	}
 

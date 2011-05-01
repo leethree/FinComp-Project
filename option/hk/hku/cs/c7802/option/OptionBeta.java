@@ -1,7 +1,6 @@
 package hk.hku.cs.c7802.option;
 
 import hk.hku.cs.c7802.base.cash.CashFlow;
-import hk.hku.cs.c7802.option.OptionAlpha.OptionAlphaBuilder;
 
 public class OptionBeta extends Option implements IEuropeanOption{
 
