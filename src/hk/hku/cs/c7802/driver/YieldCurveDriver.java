@@ -81,7 +81,6 @@ public class YieldCurveDriver {
 			}			
 		}	
 		
-		System.err.println("ref = " + ref);
 		YieldCurve curve = CurveEngine.getEngine().buildFrom(pool, ref);
 		return curve;
 	}

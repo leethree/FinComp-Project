@@ -1,6 +1,7 @@
 #!/bin/sh
 
-TODAY="-t 2010-01-01"
+_TODAY="2011-04-05"
+TODAY="-t $_TODAY"
 
 fc() {
     java -cp bin hk.hku.cs.c7802.driver.Main "$@"
@@ -55,12 +56,13 @@ else
 
 #MARKET_RATE=$(market_rate 2013-01-22)
 #if [ "$MARKET_RATE" = "" ]; then
-MARKET_RATE=0.047634
+MARKET_RATE=0.047759538294208204
 #fi
-SIGMA=0.6377602538096591 
+SIGMA=0.6300846926540035
 
-echo MARKET_RATE=$MARKET_RATE
-echo SIGMA=0.6377602538096591
+echo TODAY=$_TODAY
+echo "MARKET_RATE (of 2013-01-22) =$MARKET_RATE"
+echo SIGMA=$SIGMA
 
 # Yield Curve
 echo -n 'testYieldCurve = '

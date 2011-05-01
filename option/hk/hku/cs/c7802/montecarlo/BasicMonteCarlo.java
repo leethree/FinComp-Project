@@ -34,6 +34,9 @@ public class BasicMonteCarlo {
 		return M * N;
 	}
 	
+	/*
+	 * Note that this value is not discounted
+	 */
 	public double value(RandomGenerator ng, MonteCarloOption option, double S0, double T, double rateOfYear, double sigma) {
 		double sum = 0;
 		double sumSq = 0;

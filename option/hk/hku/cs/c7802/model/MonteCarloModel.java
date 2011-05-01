@@ -35,7 +35,7 @@ public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 		// RandomGenerator crg = new CachedRandomGenerator(new NormalGenerator.BoxMuller2(), mc.numberOfRandomNeeded());
 		RandomGenerator crg = new NormalGenerator.BoxMuller2();
 		RandomGenerator rg = new Antithetic(crg);
-		// rg.setSeed(2);
+		rg.setSeed(2);
 		
 		double v = mc.value(rg, new MonteCarloOption.Adaptor(option), S0, T, r, sigma);
 		v = v * this.getDiscountFactor(option.getExpiry());
