@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YieldCurveDriver {
-	static TimePoint ref = TimePoint.now();
-
+	public static TimePoint ref = null;
 	
 	public static String[] getTypeRecord(List<String[]> curveSpec, String ID) {
 		for(String[] r: curveSpec) {
@@ -82,6 +81,7 @@ public class YieldCurveDriver {
 			}			
 		}	
 		
+		System.err.println("ref = " + ref);
 		YieldCurve curve = CurveEngine.getEngine().buildFrom(pool, ref);
 		return curve;
 	}
@@ -109,14 +109,14 @@ public class YieldCurveDriver {
 		}
 	}
 
-	private static FixRateParser FIX_RATE_PARSER = new FixRateParser(ref);
+	private static FixRateParser FIX_RATE_PARSER;
 	
 	private static MarketData parseFixRateInstrument(String type,
 			String subType, double rate) {
 		return FIX_RATE_PARSER.parse(type, subType, rate);
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws TimePointFormatException {
 		String action = args[0];
 		assert("-y".equals(action));
 		
@@ -124,7 +124,11 @@ public class YieldCurveDriver {
 		String curveData = null;
 		List<TimePoint> dates = new ArrayList<TimePoint>();
 		for(int i = 1; i < args.length; i++) {
-			if(args[i].equals("-s")) {	// e.g. -s curveSpec.csv
+			if(args[i].equals("-t")) {
+				ref = Main.parseDate(args[i+1]);
+				i++;
+			}
+			else if(args[i].equals("-s")) {	// e.g. -s curveSpec.csv
 				curveSpec = args[i+1];
 				i++;
 			}
@@ -143,6 +147,12 @@ public class YieldCurveDriver {
 				}
 			}
 		}
+		
+		if(ref == null) {
+			ref = TimePoint.now();
+		}
+		FIX_RATE_PARSER = new FixRateParser(ref);
+		
 		if(curveSpec != null && curveData != null) {
 			YieldCurve curve = yieldCurve(curveSpec, curveData);
 			if(curve != null) {
@@ -171,6 +181,6 @@ public class YieldCurveDriver {
 	
 	public static void usage() {
 		System.out.println("# Generate Swap Curve: \n" +
-				Main.CLI + " -y [-s curveSpec.csv] [-i curveDataInput] [DATES_TO_QUERY ...] \n");
+				Main.CLI + " -y [-t ReferenceDate] [-s curveSpec.csv] [-i curveDataInput] [DATES_TO_QUERY ...] \n");
 	}
 }

@@ -1,50 +1,52 @@
 #!/bin/sh
 
+TODAY="-t 2010-01-01"
+
 fc() {
     java -cp bin hk.hku.cs.c7802.driver.Main "$@"
 }
 
 market_rate() {
-    fc -y -s curveSpec.csv -i curveDataInput.csv 2013-01-22
+    fc -y $TODAY -s curveSpec.csv -i curveDataInput.csv 2013-01-22
 }
 
 testYieldCurve() {
-    fc -y -s curveSpec.csv -i curveDataInput.csv > yieldCurve.csv
+    fc -y $TODAY -s curveSpec.csv -i curveDataInput.csv > yieldCurve.csv
     echo "yieldCurve.csv"
 }
 
 testBSGetSigma() {
-    fc -bs -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -v 30 call 95
+    fc -bs $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -v 30 call 95
 }
 
 testBSGetCall() {
-    fc -bs -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
+    fc -bs $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
 }
 
 testBTGetCall() {
-    fc -bt -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
+    fc -bt $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
 }
 
 testBTGetOptionAEuro() {
     # European
-    fc -bt -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
+    fc -bt $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
 }
 
 testBTGetOptionAAmerican() {
     # American
-    fc -bt -a -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
+    fc -bt $TODAY -a -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
 }
 
 testMCGetCall() {
-    fc -mc -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
+    fc -mc $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA call 95
 }
 
 testMCGetOptionAEuro() {
-    fc -mc -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
+    fc -mc $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA A
 }
 
 testMCGetOptionB() {
-    fc -mc -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA B
+    fc -mc $TODAY -e -S 89.31 -E 2013-01-22 -r $MARKET_RATE -s $SIGMA B
 }
 
 if [ $# -gt 0 ]; then

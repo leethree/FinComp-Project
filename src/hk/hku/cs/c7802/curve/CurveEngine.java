@@ -24,9 +24,10 @@ public class CurveEngine {
 	private CurveEngine() {
 	}
 	
-	public YieldCurve buildFrom(MarketDataPool pool) {
+	// Disable this because this could make confusion
+	/* public YieldCurve buildFrom(MarketDataPool pool) {
 		return buildFrom(pool, TimePoint.now());
-	}
+	} */
 	
 	public YieldCurve buildFrom(MarketDataPool pool, TimePoint ref) {
 		// set curve configuration
@@ -43,6 +44,7 @@ public class CurveEngine {
 		}
 		// if there's still unsolved instruments
 		if (data.size() > 0) {
+			System.err.println(data);
 			throw new RuntimeException("Not all instruments are properly solved.");
 		}
 		return curve;

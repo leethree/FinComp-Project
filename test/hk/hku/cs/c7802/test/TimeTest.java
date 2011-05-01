@@ -53,5 +53,10 @@ public class TimeTest {
 		assertTrue(TimePoint.onSameDay(time2, time.plus(time2.minus(time))));
 	}
 	
+	@Test
+	public void testParse() throws Exception {
+		System.err.println(TimePoint.parse("2010-01-01 17:18:42 GMT+08:00"));
+	}
+	
 	private TimePoint time;
 }

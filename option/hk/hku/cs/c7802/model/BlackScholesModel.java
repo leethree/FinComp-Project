@@ -5,7 +5,6 @@ import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.blackscholes.BlackScholesPredictor;
 import hk.hku.cs.c7802.blackscholes.BlackScholesSolver;
-import hk.hku.cs.c7802.curve.util.OutOfRangeException;
 import hk.hku.cs.c7802.option.CallPutOption;
 import hk.hku.cs.c7802.option.ImpliedVolatilityEvaluator;
 import hk.hku.cs.c7802.option.Option;
@@ -14,8 +13,7 @@ import hk.hku.cs.c7802.option.OptionEvaluator;
 public class BlackScholesModel extends BaseModel implements OptionEvaluator,
 		ImpliedVolatilityEvaluator {
 	
-	private BlackScholesSolver getSolver(CallPutOption option) {
-		TimePoint ref = TimePoint.now();
+	private BlackScholesSolver getSolver(CallPutOption option, TimePoint ref) {
 		double S0 = this.getCurrentStockPrice(option);
 		double K = option.getStrike();
 		double T = DayBase.ACT365.factor(option.getExpiry().minus(ref));
@@ -24,8 +22,7 @@ public class BlackScholesModel extends BaseModel implements OptionEvaluator,
 		return new BlackScholesSolver(S0, K, T, r);
 	}
 	
-	private BlackScholesPredictor getPredictor(CallPutOption option) {
-		TimePoint ref = TimePoint.now();
+	private BlackScholesPredictor getPredictor(CallPutOption option, TimePoint ref) {
 		double S0 = this.getCurrentStockPrice(option);
 		double K = option.getStrike();
 		double T = DayBase.ACT365.factor(option.getExpiry().minus(ref));
@@ -36,12 +33,12 @@ public class BlackScholesModel extends BaseModel implements OptionEvaluator,
 	}
 
 	@Override
-	public CashFlow evaluate(Option option) {
+	public CashFlow evaluate(Option option, TimePoint ref) {
 		if (!(option instanceof CallPutOption))
 			throw new IllegalArgumentException(
 					"Not supported option type for Black Scholes Model.");
 		CallPutOption op = (CallPutOption) option;
-		BlackScholesPredictor bsp = getPredictor(op);
+		BlackScholesPredictor bsp = getPredictor(op, ref);
 		double price = 0;
 		if(op.isCall())
 			price = bsp.call();
@@ -52,14 +49,14 @@ public class BlackScholesModel extends BaseModel implements OptionEvaluator,
 	}
 
 	@Override
-	public double implyVolatility(Option option, CashFlow optionPrice) {
+	public double implyVolatility(Option option, CashFlow optionPrice, TimePoint ref) {
 		if (!(option instanceof CallPutOption))
 			throw new IllegalArgumentException("Not supported option type for Black Scholes Model. Only European Call/Put supported.");
 		CallPutOption op = (CallPutOption) option;
 		if(!op.isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Black Scholes Model. Only European Call/Put supported.");
 		
-		BlackScholesSolver bss = getSolver(op);
+		BlackScholesSolver bss = getSolver(op, ref);
 		
 		if(op.isCall()) {
 			return bss.volatilityFromCall(optionPrice.getAmount()); 

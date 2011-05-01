@@ -5,7 +5,6 @@ import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.montecarlo.Antithetic;
 import hk.hku.cs.c7802.montecarlo.BasicMonteCarlo;
-import hk.hku.cs.c7802.montecarlo.CachedRandomGenerator;
 import hk.hku.cs.c7802.montecarlo.MonteCarloOption;
 import hk.hku.cs.c7802.montecarlo.NormalGenerator;
 import hk.hku.cs.c7802.montecarlo.RandomGenerator;
@@ -17,17 +16,16 @@ import hk.hku.cs.c7802.option.IEuropeanOption;
 public class MonteCarloModel extends BaseModel implements OptionEvaluator {
 
 	@Override
-	public CashFlow evaluate(Option option) {
+	public CashFlow evaluate(Option option, TimePoint ref) {
 		if(option instanceof IEuropeanOption && !((IEuropeanOption)option).isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Monte Carlo Model.");
-		return evaluateOption(option);
+		return evaluateOption(option, ref);
 	}
 	
-	private CashFlow evaluateOption(Option option) {
+	private CashFlow evaluateOption(Option option, TimePoint ref) {
 		if ((option instanceof VanillaOption) && !((VanillaOption)option).isEuropean())
 			throw new IllegalArgumentException("Not supported option type for Monte Carlo Model.");
 		
-		TimePoint ref = TimePoint.now();
 		double S0 = this.getCurrentStockPrice(option);		
 		double T = DayBase.ACT365.factor(option.getExpiry().minus(ref));
 		double r = this.getContinuousRate(option.getExpiry());

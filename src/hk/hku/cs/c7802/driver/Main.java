@@ -1,22 +1,11 @@
 package hk.hku.cs.c7802.driver;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
 
 import hk.hku.cs.c7802.base.cash.CashFlow;
-import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
 import hk.hku.cs.c7802.base.time.TimePointFormatException;
-import hk.hku.cs.c7802.base.time.TimeSpan;
-import hk.hku.cs.c7802.curve.CurveConfig;
-import hk.hku.cs.c7802.curve.CurveEngine;
 import hk.hku.cs.c7802.curve.PerfectCurve;
 import hk.hku.cs.c7802.curve.YieldCurve;
-import hk.hku.cs.c7802.curve.util.LinearInterpolator;
-import hk.hku.cs.c7802.curve.util.OutOfRangeException;
-import hk.hku.cs.c7802.market.MarketData;
-import hk.hku.cs.c7802.market.MarketDataPool;
 import hk.hku.cs.c7802.model.BaseModel;
 import hk.hku.cs.c7802.model.BinomialModel;
 import hk.hku.cs.c7802.model.BlackScholesModel;
@@ -30,14 +19,13 @@ import hk.hku.cs.c7802.option.OptionBeta;
 import hk.hku.cs.c7802.option.OptionEvaluator;
 import hk.hku.cs.c7802.option.ImpliedVolatilityEvaluator;
 import hk.hku.cs.c7802.option.VanillaOption.VanillaOptionBuilder;
-import hk.hku.cs.c7802.rate.CompoundRate;
 import hk.hku.cs.c7802.stock.Stock;
 import hk.hku.cs.c7802.stock.StockMaketData;
 
 public class Main {
 	
 	public static final String CLI = String.format("java %s", Main.class.getName());
-	public static TimePoint ref = TimePoint.now();
+	public static TimePoint ref = null;
 
 	public static void usage() {
 		String cli = String.format("java %s", Main.class.getName());
@@ -46,6 +34,7 @@ public class Main {
 		System.out.println(
 			"# Use Black Scholes or Binomial Tree or Monte-Carlo \n" +
 			cli + " -bs|-bt|-mc  \n" +
+			"\t -t ReferenceDate \n" +
 			"\t -a|-e American/Europeen(default) \n" +
 			"\t -S StockPrice \n" +
 			"\t -E ExpiryDate \n" +
@@ -54,9 +43,9 @@ public class Main {
 			"\t -v Value-of-the-option        # once given we will use it to value the sigma\n" +
 			"\t option-class-name arg1 arg2 ...");
 		System.out.println(
-			" # List all available options\n" +
-			cli + " -l" +
-			" # Show available data format\n" +
+			"# List all available options\n" +
+			cli + " -l\n" +
+			"# Show available data format\n" +
 			cli + " -df"
 		);
 	}
@@ -105,7 +94,7 @@ public class Main {
 		return null;
 	}
 	
-	private static TimePoint parseDate(String arg) throws TimePointFormatException {
+	public static TimePoint parseDate(String arg) throws TimePointFormatException {
 		try {
 			return TimePoint.parse(arg + " 17:18:42 GMT+08:00");
 		} catch (TimePointFormatException e) {
@@ -143,7 +132,11 @@ public class Main {
 		String name = "unnamed";
 		for(int i = 1; i < args.length; i++) {
 			try {
-				if(args[i].equals("-a")) {
+				if(args[i].equals("-t")) {					
+					i++;
+					ref = parseDate(args[i]);
+				}
+				else if(args[i].equals("-a")) {
 					optionType = "American";
 				}
 				else if(args[i].equals("-e")) {
@@ -183,6 +176,11 @@ public class Main {
 				System.err.println(String.format("Wrong date format: '%s' '%s'", args[i-1], args[i]));
 			}
 		}
+		
+		if (ref == null) {
+			ref = TimePoint.now();
+		}			
+		
 		if (stockPrice == null || expiryDate == null || riskFreeRate == null
 				|| optionBuilder == null || (sigma == null && optionValue == null)) {
 			System.err.println("Wrong format!");
@@ -215,7 +213,7 @@ public class Main {
 		StockMaketData smd = new StockMaketData();
 		smd.putPrice(stock, stockPrice);
 		
-		YieldCurve curve = new PerfectCurve(TimePoint.now(), riskFreeRate);
+		YieldCurve curve = new PerfectCurve(ref, riskFreeRate);
 		baseModel.setCurve(curve);
 		baseModel.setStockData(smd);
 		
@@ -226,17 +224,17 @@ public class Main {
 		if(sigma != null) {
 			smd.putVolatility(stock, sigma);
 			OptionEvaluator optionEvaluator = (OptionEvaluator) baseModel;			
-			optionValue = optionEvaluator.evaluate(option).getAmount();
+			optionValue = optionEvaluator.evaluate(option, ref).getAmount();
 			System.out.println("optionValue = " + optionValue);
 		}
 		else {	// volatility != null			
 			assert(ImpliedVolatilityEvaluator.class.isInstance(baseModel));
-			sigma = ((ImpliedVolatilityEvaluator)baseModel).implyVolatility(option, CashFlow.create(optionValue));
+			sigma = ((ImpliedVolatilityEvaluator)baseModel).implyVolatility(option, CashFlow.create(optionValue), ref);
 			System.out.println("sigma = " + sigma);
 		}
 	}
-	
-	public static void main(String args[]) {
+		
+	public static void main(String args[]) throws TimePointFormatException {
 		if(args.length > 0) {
 			if(args[0].equals("-l")) {
 				listAllOptions();

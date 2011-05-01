@@ -1,6 +1,5 @@
 package hk.hku.cs.c7802.model;
 
-import static org.junit.Assert.assertEquals;
 import hk.hku.cs.c7802.base.cash.CashFlow;
 import hk.hku.cs.c7802.base.conv.DayBase;
 import hk.hku.cs.c7802.base.time.TimePoint;
@@ -11,14 +10,12 @@ import hk.hku.cs.c7802.option.OptionEvaluator;
 import hk.hku.cs.c7802.option.VanillaOption;
 
 public class BinomialModel extends BaseModel implements OptionEvaluator {
-	
 	@Override
-	public CashFlow evaluate(Option option) {
+	public CashFlow evaluate(Option option, TimePoint ref) {
 		if (!(option instanceof VanillaOption))
 			throw new IllegalArgumentException("Not supported option type for Binomial Model.");
 		VanillaOption op = (VanillaOption) option;
 	
-		TimePoint ref = TimePoint.now();
 		double S0 = this.getCurrentStockPrice(option);		
 		double T = DayBase.ACT365.factor(option.getExpiry().minus(ref));
 		double r = this.getContinuousRate(option.getExpiry());
