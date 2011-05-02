@@ -38,7 +38,13 @@ public class BinomialTreeTest {
 	}
 	
 	@Test
-	public void testBinomialTreePerformance() {  // the null function
+	public void testBinomialTreePerformance() {  //option style
+//		boolean t=isEuropean;
+		
+//		if(t)
+//		{
+//			double v=mc.value(mockOption,S0,T,r,sigma,style);
+//		}
 	
 	}
 	

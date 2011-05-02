@@ -19,6 +19,8 @@ public class BasicBinomialTree {
 			comb=new Combination();
 
 			double sum = 0;
+			
+			//boolean usfom=isEuropean;
 
 			for(int i=0;i<(stepnum+1);i++){
 				int sig=comb.combin(stepnum, i);
@@ -28,6 +30,8 @@ public class BasicBinomialTree {
 				double tp=sig*pr*payout;
 				sum += tp;
 			}		
+			
+			//usfom=(!usfom);
 		
 			double temp=sum*Math.pow(Math.E, -rateOfYear*T);		
 		
@@ -35,6 +39,7 @@ public class BasicBinomialTree {
 		}
 		else{
 		
+			//boolean eaufom=(!isEuropean);
 
 			double [] prc=new double[stepnum+1];
 			double [] tpc=new double[stepnum];
@@ -44,6 +49,8 @@ public class BasicBinomialTree {
 				double tpayout=option.payout(ts);
 				prc[i]=tpayout;			
 			}
+			
+			//eaufom=(!eaufom);
 		
 			for(int i=stepnum-1;i>=0;i--){
 				for(int j=0;j<=i;j++){
