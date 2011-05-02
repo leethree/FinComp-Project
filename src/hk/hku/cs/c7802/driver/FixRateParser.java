@@ -34,8 +34,7 @@ public class FixRateParser {
 			return new TimeSpan(0, 0, 1);
 		}
 		if(subType.equals("TN")) {
-			// TODO untested, unconfirmed
-			return new TimeSpan(0, 0, 2);
+			throw new RuntimeException("Should not call parseTimeSpan for TN, treat me as FRA");
 		}
 		Matcher matcher = re1.matcher(subType);
 		if(matcher.matches()) {
@@ -69,7 +68,13 @@ public class FixRateParser {
 	}
 	
 	public InterestRateInstrumentBuilder getInstrumentBuilder(String type, String subType) {
-		if(type.equals("CASH")) {
+		if(type.equals("CASH") && subType.equals("TN")) {
+			FRABuilder ib = FRAInstrument.create();
+			ib.effectiveAfter(new TimeSpan(0, 0, 1));
+			ib.terminatingAfter(new TimeSpan(0, 0, 2));
+			return ib;
+		}
+		else if(type.equals("CASH")) {
 			CashInstrumentBuilder ib = CashInstrument.create();
 			TimeSpan ts = parseTimeSpan(subType);
 			ib.maturingAfter(ts);
@@ -115,7 +120,10 @@ public class FixRateParser {
 		InterestRateInstrument i = ib.build();		
 		
 		CashFlow price = null;
-		if(type.equals("CASH") || type.equals("SWAP")) {
+		if(type.equals("CASH") && subType.equals("TN")) {
+			price = CashFlow.create(0.0);
+		}
+		else if(type.equals("CASH") || type.equals("SWAP")) {
 			price = CashFlow.create(1.0);
 		}
 		else if(type.equals("FRA")){

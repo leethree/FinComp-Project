@@ -54,13 +54,14 @@ if [ $# -gt 0 ]; then
     fc "$@"
 else
 
-#MARKET_RATE=$(market_rate 2013-01-22)
+MARKET_RATE_TRUE=$(market_rate 2013-01-22)
 #if [ "$MARKET_RATE" = "" ]; then
 MARKET_RATE=0.047759538294208204
 #fi
 SIGMA=0.6300846926540035
 
 echo TODAY=$_TODAY
+echo "MARKET_RATE_TRUE (of 2013-01-22) =$MARKET_RATE"
 echo "MARKET_RATE (of 2013-01-22) =$MARKET_RATE"
 echo SIGMA=$SIGMA
 
