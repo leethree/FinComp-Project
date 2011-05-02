@@ -34,7 +34,7 @@ public class SwapInstrument extends InterestRateInstrument {
 	
 	private void buildCashStream() {
 		stream = new CashStream();
-		// the reference day is the next business day
+		// the reference day is the next business day if not today
 		TimePoint ref = DateRoller.NEXT_BUZ_DAY.roll(timestamp);
 		
 		// we'll get our money back on the maturity day

@@ -66,8 +66,14 @@ public class CurveEngine {
 				MarketData entry = it.next();
 				if (entry.getInst() instanceof InterestRateInstrument) {
 					InterestRateInstrument inst = (InterestRateInstrument) entry.getInst();
-					inst.valueWith(solver);
-					if (solver.solve(entry.getPrice())) {
+					CashFlow value = inst.valueWith(solver);
+					// if there's nothing to solve with this instrument
+					if (value != null) {
+						if (! entry.getPrice().equals(value))
+							System.err.println("Warning: data inconsistency is detected, " + inst.getName() 
+									+ " is priced " + entry.getPrice() + " but is valued " + value);
+						it.remove();
+					} else if (solver.solve(entry.getPrice())) {
 						curve.addDataPoint(solver.getSolutionTime(), solver.getSolutionDf());
 						it.remove();
 						stable = false;

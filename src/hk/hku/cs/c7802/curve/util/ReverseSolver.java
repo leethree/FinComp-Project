@@ -20,7 +20,10 @@ public class ReverseSolver implements InstrumentEvaluator {
 
 	@Override
 	public CashFlow getValue() {
-		return null;
+		if (eva.pendingFlow == null)
+			return eva.presentValue;
+		else
+			return null;
 	}
 	
 	/**
@@ -53,9 +56,9 @@ public class ReverseSolver implements InstrumentEvaluator {
 	class CashStreamRecorder implements CashStreamVisitor{
 
 		private CashFlow presentValue;
-		private CashFlow pendingFlow;
+		private CashFlow pendingFlow; 	// null if there's no pending flow found
 		private TimePoint pendingTime;
-		private boolean failed;
+		private boolean failed; 	// true only if there's more than one pending cash flow
 		
 		@Override
 		public void before() {
@@ -67,8 +70,8 @@ public class ReverseSolver implements InstrumentEvaluator {
 
 		@Override
 		public void visit(CashFlow cf, TimePoint tp) {
-			if (presentValue == null)
-				return; // do nothing if the evaluation already fails
+			if (failed || presentValue == null)
+				return; // do nothing if the evaluation already fails or it's not initialized
 			try {
 				// Present Value += Future Value * Discount Factor
 				presentValue = presentValue.plus(cf.multiply(curve.disFactorAt(tp)));
@@ -86,7 +89,7 @@ public class ReverseSolver implements InstrumentEvaluator {
 
 		@Override
 		public void after() {
-			// TODO why empty?
+			// do nothing
 		}
 	}
 }

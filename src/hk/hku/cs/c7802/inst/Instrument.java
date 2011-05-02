@@ -22,6 +22,10 @@ public abstract class Instrument {
 		return validthru;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	@Override
 	public String toString() {
 		return name + " T" + timestamp.toString();

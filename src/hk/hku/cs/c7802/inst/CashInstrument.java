@@ -29,14 +29,15 @@ public class CashInstrument extends InterestRateInstrument {
 	
 	private void buildCashStream() {
 		stream = new CashStream();
-		// suppose we save $1 on the next business day, i.e., the reference day
+		// suppose we save $1 on the next business day if not today, i.e., the reference day
 		TimePoint ref = DateRoller.NEXT_BUZ_DAY.roll(timestamp);
 
 		// we'll get $1+interest on the pay-out day
 		TimePoint payday = DateRoller.MOD_NEXT_BUZ_DAY.roll(ref.plus(maturity));
 		
-		// workaround for O/N and T/N
-		if (maturity.equals(new TimeSpan(0, 0, 1)) || maturity.equals(new TimeSpan(0, 0, 2)))
+		// workaround for O/N
+		// Pay-day should not be earlier than reference day 
+		if (payday.minus(ref).getDay() <= 0)
 			payday = DateRoller.NEXT_BUZ_DAY.roll(ref.plus(maturity));
 		
 		stream.add(CashFlow.create(1 / rateType.disFactorAfter(rate, payday.minus(ref))), payday);

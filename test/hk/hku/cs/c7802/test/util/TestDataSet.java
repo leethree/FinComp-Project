@@ -24,7 +24,8 @@ public class TestDataSet {
 	public TestDataSet(TimePoint time) {
 		this.time = time;
 		cash_on = buildCash("Cash-O/N", new TimeSpan(0, 0, 1), 3.20);
-		cash_tn = buildCash("Cash-T/N", new TimeSpan(0, 0, 2), 3.25);
+		// cash_tn = buildCash("Cash-T/N", new TimeSpan(0, 0, 2), 3.25);
+		cash_tn = buildFRA("Cash-T/N", new TimeSpan(0, 0, 1), new TimeSpan(0, 0, 2), 3.25);
 		cash_1w = buildCash("Cash-1W", new TimeSpan(0, 0, 7), 3.40);
 		cash_2w = buildCash("Cash-2W", new TimeSpan(0, 0, 14), 3.45);
 		cash_1m = buildCash("Cash-1M", new TimeSpan(0, 1, 0), 3.50);
@@ -47,7 +48,7 @@ public class TestDataSet {
 	//	CASH	ON
 	public CashInstrument cash_on;
 	//	CASH	TN
-	public CashInstrument cash_tn;
+	public FRAInstrument cash_tn;
 	//	CASH	1W
 	public CashInstrument cash_1w;
 	//	CASH	2W
@@ -125,7 +126,8 @@ public class TestDataSet {
 	
 	public static TimePoint getDefaultTime() {
 		try {
-			return TimePoint.parse("2011-04-05 12:00:00 GMT+8");
+			// return TimePoint.parse("2011-04-05 12:00:00 GMT+8");
+			return TimePoint.parse("2010-01-01 12:00:00 GMT+8");
 		} catch (TimePointFormatException e) {
 			// This should never happen
 			throw new RuntimeException("This is impossible!");

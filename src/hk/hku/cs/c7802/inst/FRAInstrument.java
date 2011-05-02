@@ -30,15 +30,25 @@ public class FRAInstrument extends InterestRateInstrument {
 	
 	private void buildCashStream() {
 		stream = new CashStream();
-		// the reference day is the next business day
+		// the reference day is the next business day if not today
 		TimePoint ref = DateRoller.NEXT_BUZ_DAY.roll(timestamp);
 		
 		// we will pay $1 on the effective day
 		TimePoint effday = DateRoller.MOD_NEXT_BUZ_DAY.roll(ref.plus(effective));
+		
+		// workaround for T/N
+		// effective day should not be earlier than reference day 
+		if (effday.minus(ref).getDay() <= 0)
+			effday = DateRoller.NEXT_BUZ_DAY.roll(ref.plus(effective));
 		stream.add(CashFlow.create(- 1), effday);
 		
 		// we will get $1+interest on the termination day
 		TimePoint termday = DateRoller.MOD_NEXT_BUZ_DAY.roll(ref.plus(termination));
+		
+		// FIXME temporary workaround for T/N
+		// termination day should not be earlier than effective day 
+		if (termday.minus(effday).getDay() <= 0)
+			termday = DateRoller.NEXT_BUZ_DAY.roll(effday.plus(TimeSpan.NEXTDAY));
 		stream.add(CashFlow.create(1 / rateType.disFactorAfter(rate, termday.minus(effday))), termday);
 	}
 	
