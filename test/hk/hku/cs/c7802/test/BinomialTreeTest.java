@@ -38,7 +38,7 @@ public class BinomialTreeTest {
 	}
 	
 	@Test
-	public void testBinomialTreePerformance() {
+	public void testBinomialTreePerformance() {  // the null function
 	
 	}
 	
